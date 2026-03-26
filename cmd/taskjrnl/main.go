@@ -2,40 +2,31 @@ package main
 
 import (
 	"os"
+
+	app "taskjrnl/internal/app"
+	errors "taskjrnl/internal/errors"
 	exitcodes "taskjrnl/internal/exitCodes"
 )
 
+func checkForMinArgs() error {
+	const MinCountArgs = 1
+	numOfArgs := uint(len(os.Args[1:]))
+	if numOfArgs < MinCountArgs {
+		return errors.ErrTooFewArgs
+	}
+	return nil
+}
+
 func main() {
-	const minArgs uint = 1
 
-	args := os.Args[1:]
-	numArgs := uint(len(args))
-
-	if numArgs < minArgs {
-		drawHelp()
+	if err := checkForMinArgs(); err != nil {
+		app.DrawHelp()
 		os.Exit(exitcodes.ExitUsage)
 	}
 
-	var displayHelp bool
-	var errorDetected bool
-
-	for _, arg := range args {
-		switch arg {
-		case "-h", "--help", "help":
-			displayHelp = true
-		default:
-			displayHelp = true
-		}
+	if err := app.App(); err != nil {
+		os.Exit(exitcodes.ExitError)
 	}
 
-	if displayHelp {
-		drawHelp()
-	}
-
-	exitCode := exitcodes.ExitOk
-	if errorDetected {
-		exitCode = exitcodes.ExitError
-	}
-
-	os.Exit(exitCode)
+	os.Exit(exitcodes.ExitOk)
 }

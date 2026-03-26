@@ -1,12 +1,12 @@
-package main
+package app
 
 import "charm.land/lipgloss/v2"
 
-func drawHelp() {
+func DrawHelp() {
 	help_output := []string{
 		"taskjrnl - a simple command line task journal",
 		"Usage:",
-		"\ttaskjrnl|task <command> [options]",
+		"\ttaskjrnl|task [options] <command>",
 		"\n",
 		"Commands:",
 		"\thelp\tShow help",

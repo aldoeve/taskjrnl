@@ -1,2 +1,2 @@
 run:
-	go run ./cmd/taskjrnl/ $(ARGS)
+	go run ./cmd/taskjrnl/ help
