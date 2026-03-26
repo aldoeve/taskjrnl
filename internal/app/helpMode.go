@@ -2,7 +2,12 @@ package app
 
 import "charm.land/lipgloss/v2"
 
-func DrawHelp() {
+func HelpMode() error {
+	drawHelp()
+	return nil
+}
+
+func drawHelp() {
 	help_output := []string{
 		"taskjrnl - a simple command line task journal",
 		"Usage:",
