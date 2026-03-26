@@ -15,6 +15,7 @@ func drawHelp() {
 		"\n",
 		"Commands:",
 		"\thelp\tShow help",
+		"add",
 		"\n",
 		"Options:",
 		"\t-v,--help\tShow help",

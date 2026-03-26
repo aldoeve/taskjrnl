@@ -1,3 +1,4 @@
+// Package main contains the entry point of the application.
 package main
 
 import (

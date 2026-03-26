@@ -4,6 +4,7 @@ import (
 	"flag"
 	appmodes "taskjrnl/internal/appModes"
 	errors "taskjrnl/internal/errors"
+	"taskjrnl/internal/store"
 )
 
 func bindStringToFunc(s *string) func() error {
@@ -13,6 +14,7 @@ func bindStringToFunc(s *string) func() error {
 		appmodes.Help:   HelpMode,
 		appmodes.Jrnl:   Jrnl,
 		appmodes.List:   List,
+		appmodes.Link:   Link,
 		appmodes.Modify: Modify,
 	}
 	if requestedFunc, found := modeHandlers[*s]; found {
@@ -48,6 +50,12 @@ func App() error {
 
 	mode := bindStringToFunc(&requestedMode)
 
+	db, err := store.DBconnection()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
 	return mode()
 }
 
@@ -64,5 +72,8 @@ func List() error {
 	return nil
 }
 func Modify() error {
+	return nil
+}
+func Link() error {
 	return nil
 }

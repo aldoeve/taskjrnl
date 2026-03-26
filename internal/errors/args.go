@@ -1,3 +1,4 @@
+// The package errors contains custom errors made for debugging this application.
 package errors
 
 import "errors"
