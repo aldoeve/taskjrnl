@@ -1,15 +1,16 @@
 package app
 
 import (
+	"database/sql"
 	"flag"
 	appmodes "taskjrnl/internal/appModes"
 	errors "taskjrnl/internal/errors"
 	"taskjrnl/internal/store"
 )
 
-func bindStringToFunc(s *string) func() error {
-	modeHandlers := map[string]func() error{
-		appmodes.Add:    Add,
+func bindStringToFunc(s *string) func(*sql.DB) error {
+	modeHandlers := map[string]func(*sql.DB) error{
+		appmodes.Add:    AddMode,
 		appmodes.Done:   Done,
 		appmodes.Help:   HelpMode,
 		appmodes.Jrnl:   Jrnl,
@@ -56,24 +57,20 @@ func App() error {
 	}
 	defer db.Close()
 
-	return mode()
+	return mode(db)
 }
-
-func Add() error {
+func Done(_ *sql.DB) error {
 	return nil
 }
-func Done() error {
+func Jrnl(_ *sql.DB) error {
 	return nil
 }
-func Jrnl() error {
+func List(_ *sql.DB) error {
 	return nil
 }
-func List() error {
+func Modify(_ *sql.DB) error {
 	return nil
 }
-func Modify() error {
-	return nil
-}
-func Link() error {
+func Link(_ *sql.DB) error {
 	return nil
 }

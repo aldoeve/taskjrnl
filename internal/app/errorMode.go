@@ -1,7 +1,10 @@
 package app
 
-import errors "taskjrnl/internal/errors"
+import (
+	"database/sql"
+	errors "taskjrnl/internal/errors"
+)
 
-func NoCorrespondingMode() error {
+func NoCorrespondingMode(_ *sql.DB) error {
 	return errors.ErrUsage
 }

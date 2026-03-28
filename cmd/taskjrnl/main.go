@@ -21,12 +21,12 @@ func checkForMinArgs() error {
 func main() {
 
 	if err := checkForMinArgs(); err != nil {
-		_ = app.HelpMode()
+		_ = app.HelpMode(nil)
 		os.Exit(exitcodes.ExitUsage)
 	}
 
 	if err := app.App(); err != nil {
-		_ = app.HelpMode()
+		_ = app.HelpMode(nil)
 		os.Exit(exitcodes.ExitError)
 	}
 
