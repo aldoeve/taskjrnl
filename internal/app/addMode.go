@@ -23,7 +23,7 @@ func AddMode(db *sql.DB) error {
 	var err error
 
 	if numArgs == 1 {
-		err = store.AddSingleTaskNoOptions(db, userInput[0])
+		err = store.CreateTask(db, userInput[0], nil, nil)
 	} else {
 		err = addTaskWithAddionalInfo(db, userInput)
 	}
