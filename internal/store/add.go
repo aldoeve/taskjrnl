@@ -10,10 +10,10 @@ import (
 
 func insertTask(db *sql.DB, task schema.Tasks) error {
 	stmt := `
-		INSERT INTO Tasks (name, priority, importance_variance)
-		VALUES(?, ?, ?);
+		INSERT INTO Tasks (name, tag, priority, importance_variance)
+		VALUES(?, ?, ?, ?);
 	`
-	_, err := db.Exec(stmt, task.Name, *task.Priority, *task.Importance_variance)
+	_, err := db.Exec(stmt, task.Name, task.Tag, task.Priority, consts.DefaultVairance)
 
 	if err != nil {
 		println(err.Error())
@@ -23,22 +23,18 @@ func insertTask(db *sql.DB, task schema.Tasks) error {
 	return nil
 }
 
-// Creates and inserts a single task into the database. Pointer parameters are optional.
-func CreateTask(db *sql.DB, taskName string, priority *string, importanceVariance *int) error {
+// Creates and inserts a single task into the database. Pointer parameters are optional so nil means to chose defaults.
+func CreateTask(db *sql.DB, taskName string, tag *string, priority *string) error {
 	finalPriority := consts.LowPriority
-	finalImportanceVariance := consts.InitalImportanceVariance
 
 	if priority != nil {
 		finalPriority = *priority
 	}
-	if importanceVariance != nil {
-		finalImportanceVariance = *importanceVariance
-	}
 
 	task := schema.Tasks{
-		Name:                taskName,
-		Priority:            &finalPriority,
-		Importance_variance: &finalImportanceVariance,
+		Name:     taskName,
+		Tag:      tag,
+		Priority: &finalPriority,
 	}
 
 	return insertTask(db, task)

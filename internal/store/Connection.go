@@ -33,6 +33,7 @@ func initSchema(db *sql.DB) error {
 	CREATE TABLE IF NOT EXISTS Tasks (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		name TEXT NOT NULL,
+		tag TEXT,
 		create_date TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
 		priority CHAR(1) NOT NULL CHECK(priority IN('L', 'M','H')),
 		importance_variance INTEGER NOT NULL

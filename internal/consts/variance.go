@@ -1,5 +1,5 @@
 package consts
 
 const (
-	InitalImportanceVariance = 0
+	DefaultVairance = 0
 )
