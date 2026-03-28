@@ -3,12 +3,16 @@ package app
 
 import (
 	"database/sql"
-	"fmt"
+	errors "taskjrnl/internal/errors"
 	util "taskjrnl/pkg/util"
 )
 
 func AddMode(db *sql.DB) error {
-	user_input := util.ArgsAfterKeyword()
-	fmt.Println(user_input, len(user_input))
+	userInput := util.ArgsAfterKeyword()
+
+	if len(userInput) < 1 {
+		return errors.ErrTooFewArgs
+	}
+
 	return nil
 }

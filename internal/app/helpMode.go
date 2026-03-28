@@ -31,7 +31,7 @@ func drawHelp() {
 		{"-h,--help", "Show Help"},
 	}
 
-	help_output := []string{
+	helpOutput := []string{
 		"\ntaskjrnl - a simple command line task journal",
 		"Usage:",
 		"\ttaskjrnl|task [options] <command>",
@@ -47,11 +47,11 @@ func drawHelp() {
 		return paddedStrings
 	}
 
-	help_output = append(help_output, formatCMDorFlagArrays(commands, defaultPadding)...)
-	help_output = append(help_output, "Options:")
-	help_output = append(help_output, formatCMDorFlagArrays(flags, defaultPadding)...)
-	help_output = append(help_output, "\n")
+	helpOutput = append(helpOutput, formatCMDorFlagArrays(commands, defaultPadding)...)
+	helpOutput = append(helpOutput, "Options:")
+	helpOutput = append(helpOutput, formatCMDorFlagArrays(flags, defaultPadding)...)
+	helpOutput = append(helpOutput, "\n")
 
-	output := lipgloss.JoinVertical(lipgloss.Top, help_output...)
+	output := lipgloss.JoinVertical(lipgloss.Top, helpOutput...)
 	println(output)
 }
