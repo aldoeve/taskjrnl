@@ -3,6 +3,7 @@ package app
 
 import (
 	"database/sql"
+	"slices"
 	"strings"
 	"taskjrnl/internal/consts"
 	errors "taskjrnl/internal/errors"
@@ -10,91 +11,125 @@ import (
 	util "taskjrnl/pkg/util"
 )
 
-func addTaskWithOptionalArgs(db *sql.DB, taskName string, optionalArgs []string) error {
-	const priorityStr = "priority:"
-	const tagStr = "tag:"
+const (
+	priorityKeyword = "priority:"
+	tagKeyword      = "tag:"
+)
 
-	var seenPriority bool
-	var seenTag bool
+type mode int
 
-	var priorityMode bool
-	var tagMode bool
+const (
+	noMode mode = iota
+	priorityMode
+	tagMode
+)
 
-	var priorityValue string
-	var tagValue string
+type addParserState struct {
+	mode mode
 
-	for _, arg := range optionalArgs {
-		// Locates the keyword in a token and if its value is also with it.
-		if !priorityMode && !tagMode {
-			isPriority := strings.HasPrefix(arg, priorityStr)
-			isTag := strings.HasPrefix(arg, tagStr)
+	seenPriority bool
+	seenTag      bool
 
-			// Errors on no keywords or repeated keywords
-			if (seenPriority && isPriority) || (seenTag && isTag) {
-				return errors.IncorrectFormat
-			}
-			if !isTag && !isPriority {
-				return errors.IncorrectFormat
-			}
+	finalPriorityVal string
+	finalTagVal      string
+}
 
-			value := strings.TrimPrefix(arg, priorityStr)
-			value = strings.TrimPrefix(value, tagStr)
+func (s *addParserState) figureOutMode(token string) {
+	if strings.HasPrefix(token, priorityKeyword) {
+		s.mode = priorityMode
+		return
+	}
+	if strings.HasPrefix(token, tagKeyword) {
+		s.mode = tagMode
+	}
+}
 
-			seenPriority = seenPriority || isPriority
-			seenTag = seenTag || isTag
+func (s *addParserState) hasRepeatedKeywords() bool {
+	inPriority := (s.mode == priorityMode)
+	inTag := (s.mode == tagMode)
 
-			// Check to see if keyword's value is in the same token.
-			// Otherwise, the next token's value wholy belongs to this keyword.
-			// NOTE: Implies that tag can hold any value/keyword if malformed - intended that way.
-			if len(value) > 0 {
-				if isPriority {
-					priorityValue = value
-				} else {
-					tagValue = value
-				}
-			} else {
-				if isPriority {
-					priorityMode = true
-				} else {
-					tagMode = true
-				}
-			}
+	repeatedPriority := s.seenPriority && inPriority
+	repeatedTag := s.seenTag && inTag
 
-			// Value to the keyword is in another token.
+	s.seenPriority = s.seenPriority || inPriority
+	s.seenTag = s.seenTag || inTag
+
+	return repeatedPriority || repeatedTag
+}
+
+func (s *addParserState) stripKeyword(token string) string {
+	if s.mode == priorityMode {
+		return strings.TrimPrefix(token, priorityKeyword)
+	}
+	return strings.TrimPrefix(token, tagKeyword)
+}
+
+func (s *addParserState) consumeAndAssign(value string) error {
+
+	switch s.mode {
+	case priorityMode:
+		levelsOfPriority := []string{consts.LowPriority, consts.MidPriority, consts.HighPriority}
+		if slices.Contains(levelsOfPriority, value) {
+			s.finalPriorityVal = value
+			s.mode = noMode
 		} else {
+			return errors.IncorrectFormat
+		}
+	case tagMode:
+		s.finalTagVal = value
+		s.mode = noMode
+	}
 
-			if priorityMode {
-				value := strings.ToUpper(arg)
-				if value == consts.LowPriority || value == consts.MidPriority || value == consts.HighPriority {
-					priorityValue = value
-					priorityMode = false
-				} else {
+	return nil
+}
+
+func addTaskWithOptionalArgs(db *sql.DB, taskName string, optionalArgs []string) error {
+
+	state := addParserState{}
+
+	for _, token := range optionalArgs {
+		if state.mode == noMode {
+			state.figureOutMode(token)
+
+			if state.mode == noMode {
+				return errors.IncorrectFormat
+			}
+			if state.hasRepeatedKeywords() {
+				return errors.IncorrectFormat
+			}
+
+			value := state.stripKeyword(token)
+
+			if value != "" {
+				if state.consumeAndAssign(value) != nil {
 					return errors.IncorrectFormat
 				}
 			}
-			if tagMode {
-				tagValue = arg
-				tagMode = false
+
+		} else {
+			if state.consumeAndAssign(token) != nil {
+				return errors.IncorrectFormat
 			}
 		}
 	}
 
-	if priorityMode || tagMode {
+	if state.mode != noMode {
 		return errors.IncorrectFormat
 	}
 
-	// Sanitize
-	dbReadyPriority := &priorityValue
-	dbReadyTag := &tagValue
+	var (
+		sanitizedPriority *string
+		sanitizedTag      *string
+	)
 
-	if *dbReadyPriority == "" {
-		dbReadyPriority = nil
+	if state.finalPriorityVal != "" {
+		sanitizedPriority = &state.finalPriorityVal
 	}
-	if *dbReadyTag == "" {
-		dbReadyTag = nil
+	if state.finalTagVal != "" {
+		sanitizedTag = &state.finalTagVal
 	}
 
-	return store.CreateTask(db, taskName, dbReadyTag, dbReadyPriority)
+	return store.CreateTask(db, taskName, sanitizedTag, sanitizedPriority)
 }
 
 func AddMode(db *sql.DB) error {
