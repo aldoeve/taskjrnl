@@ -13,14 +13,17 @@ func insertTask(db *sql.DB, task schema.Tasks) error {
 		INSERT INTO Tasks (name, tag, priority, importance_variance)
 		VALUES(?, ?, ?, ?);
 	`
-	_, err := db.Exec(stmt, task.Name, task.Tag, task.Priority, consts.DefaultVairance)
-
+	result, err := db.Exec(stmt, task.Name, task.Tag, task.Priority, consts.DefaultVairance)
 	if err != nil {
-		println(err.Error())
 		return err
 	}
 
-	return nil
+	last_id, err := result.LastInsertId()
+	if err != nil {
+		return err
+	}
+
+	return RearangePositions(db, last_id)
 }
 
 // Creates and inserts a single task into the database. Pointer parameters are optional so nil means to chose defaults.

@@ -10,7 +10,7 @@ import (
 
 func ListAllTasks(db *sql.DB) error {
 	stmt := `
-		SELECT name, tag, create_date, priority, importance_variance FROM Tasks;
+		SELECT name, tag, create_date, priority FROM Tasks;
 	`
 	rows, err := db.Query(stmt)
 	if err != nil {
@@ -26,13 +26,10 @@ func ListAllTasks(db *sql.DB) error {
 			&task.Tag,
 			&task.Create_date,
 			&task.Priority,
-			&task.Importance_variance,
 		); err != nil {
 			return err
 		}
-		fmt.Println(task.Name, task.Tag, task.Create_date, task.Priority, task.Importance_variance)
-		println("there done")
+		fmt.Println(task.Name, task.Tag, task.Create_date, task.Priority)
 	}
-	println("finsihed")
 	return nil
 }
