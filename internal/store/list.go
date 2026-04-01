@@ -24,12 +24,12 @@ func ListAllTasks(db *sql.DB) error {
 		if err := rows.Scan(
 			&task.Name,
 			&task.Tag,
-			&task.Create_date,
+			&task.DateCreated,
 			&task.Priority,
 		); err != nil {
 			return err
 		}
-		fmt.Println(task.Name, task.Tag, task.Create_date, task.Priority)
+		fmt.Println(task.Name, task.Tag, task.DateCreated, task.Priority)
 	}
 	return nil
 }
