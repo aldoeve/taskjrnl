@@ -15,6 +15,7 @@ func cleanPositions(db *sql.DB) error {
 	if _, err := db.Exec(stmt); err != nil {
 		return err
 	}
+
 	return nil
 }
 
