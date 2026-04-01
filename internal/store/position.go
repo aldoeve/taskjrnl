@@ -7,15 +7,28 @@ import (
 	_ "modernc.org/sqlite"
 )
 
-func RearangePositions(db *sql.DB, task_id int64) error {
+func cleanPositions(db *sql.DB) error {
 	stmt := `
-	SELECT Positions.position, Tasks.id, 
-	Tasks.date_created, Tasks.priority, 
-	Tasks.importance_variance
-	FROM Positions
-	Join Tasks
-	ON Positions.task_id = Tasks.id
-	ORDER BY Positions.position
+	DELETE FROM Positions;
+	`
+
+	if _, err := db.Exec(stmt); err != nil {
+		return err
+	}
+	return nil
+}
+
+func RearangePositions(db *sql.DB, task_id int64) error {
+
+	if err := cleanPositions(db); err != nil {
+		return err
+	}
+
+	stmt := `
+	SELECT 
+	id, date_created, 
+	priority, importance_variance
+	FROM Tasks;
 	`
 	rows, err := db.Query(stmt)
 	if err != nil {
@@ -25,11 +38,9 @@ func RearangePositions(db *sql.DB, task_id int64) error {
 	defer rows.Close()
 
 	for rows.Next() {
-		positionInfo := schema.Positions{}
 		taskInfo := schema.Tasks{}
 
 		if err := rows.Scan(
-			&positionInfo.Position,
 			&taskInfo.Id,
 			&taskInfo.DateCreated,
 			&taskInfo.Priority,
@@ -38,7 +49,6 @@ func RearangePositions(db *sql.DB, task_id int64) error {
 			println(err.Error())
 			return err
 		}
-		println(positionInfo.Position, taskInfo.Id)
 	}
 
 	return nil
