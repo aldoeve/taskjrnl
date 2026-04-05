@@ -7,7 +7,7 @@ import (
 	_ "modernc.org/sqlite"
 )
 
-func cleanPositions(db *sql.DB) error {
+func cleanPositionsTable(db *sql.DB) error {
 	stmt := `
 	DELETE FROM Positions;
 	`
@@ -21,7 +21,7 @@ func cleanPositions(db *sql.DB) error {
 
 func RearangePositions(db *sql.DB, task_id int64) error {
 
-	if err := cleanPositions(db); err != nil {
+	if err := cleanPositionsTable(db); err != nil {
 		return err
 	}
 
