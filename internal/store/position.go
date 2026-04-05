@@ -38,6 +38,7 @@ func RearangePositions(db *sql.DB, task_id int64) error {
 	}
 	defer rows.Close()
 
+	// Define priority queue here
 	for rows.Next() {
 		taskInfo := schema.Tasks{}
 
@@ -50,7 +51,10 @@ func RearangePositions(db *sql.DB, task_id int64) error {
 			println(err.Error())
 			return err
 		}
+		//push onto pq
 	}
+
+	//inset back into table till pq empty
 
 	return nil
 }
