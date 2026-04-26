@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func captureOutput(t *testing.T, f func()) string {
+func CaptureOutput(t *testing.T, f func()) string {
 	t.Helper()
 
 	old := os.Stdout
