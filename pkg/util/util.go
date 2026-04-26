@@ -3,6 +3,7 @@ package util
 
 import (
 	"flag"
+	"taskjrnl/internal/config"
 	consts "taskjrnl/internal/consts"
 	schema "taskjrnl/internal/schema"
 	"time"
@@ -23,8 +24,9 @@ func CalculateImportance(task *schema.Tasks) int {
 	priority := PriorityValue[*task.Priority]
 
 	var daysSinceCreation int
-	layout := "2009-09-25 15:09:01" // SQLite TEXT format.
+	layout := config.TimeFormat // SQLite TEXT format.
 	storedTime, err := time.Parse(layout, task.DateCreated)
+
 	if err == nil {
 		daysSinceCreation = int(time.Since(storedTime).Hours() / 24)
 	}
