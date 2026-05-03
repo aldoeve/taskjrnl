@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"flag"
 	appmodes "taskjrnl/internal/appModes"
+	"taskjrnl/internal/consts"
 	errors "taskjrnl/internal/errors"
 	"taskjrnl/internal/store"
 )
@@ -51,7 +52,7 @@ func App() error {
 
 	mode := bindStringToFunc(&requestedMode)
 
-	db, err := store.DBconnection()
+	db, err := store.DBconnection(consts.DBLocation)
 	if err != nil {
 		return err
 	}

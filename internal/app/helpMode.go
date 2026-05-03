@@ -53,5 +53,5 @@ func drawHelp() {
 	helpOutput = append(helpOutput, "\n")
 
 	output := lipgloss.JoinVertical(lipgloss.Top, helpOutput...)
-	println(output)
+	fmt.Println(output)
 }

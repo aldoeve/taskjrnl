@@ -2,6 +2,7 @@ package store
 
 import (
 	"database/sql"
+	"fmt"
 	schema "taskjrnl/internal/schema"
 
 	_ "modernc.org/sqlite"
@@ -33,7 +34,7 @@ func RearangePositions(db *sql.DB, task_id int64) error {
 	`
 	rows, err := db.Query(stmt)
 	if err != nil {
-		println(err.Error())
+		fmt.Println(err.Error())
 		return err
 	}
 	defer rows.Close()
@@ -48,7 +49,7 @@ func RearangePositions(db *sql.DB, task_id int64) error {
 			&taskInfo.Priority,
 			&taskInfo.ImportanceVariance,
 		); err != nil {
-			println(err.Error())
+			fmt.Println(err.Error())
 			return err
 		}
 		//push onto pq

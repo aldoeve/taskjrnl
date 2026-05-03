@@ -9,14 +9,14 @@ import (
 	_ "modernc.org/sqlite"
 )
 
-func isDBExists() bool {
-	_, err := os.Stat(consts.DBLocation)
+func isDBExists(dbLocation string) bool {
+	_, err := os.Stat(dbLocation)
 	return err == nil
 }
 
-func DBconnection() (*sql.DB, error) {
-	isNewDB := !isDBExists()
-	db, err := sql.Open(consts.DatabaseType, consts.DBLocation)
+func DBconnection(dbLocation string) (*sql.DB, error) {
+	isNewDB := !isDBExists(dbLocation)
+	db, err := sql.Open(consts.DatabaseType, dbLocation)
 	if isNewDB && err == nil {
 		err = initSchema(db)
 	}
