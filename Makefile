@@ -14,7 +14,7 @@ verbose:
 	go test ./... -v
 
 coverage:
-	go test ./... -coverprofile=coverage.out
+	go test ./... -coverprofile=coverage.out -count=1
 	go tool cover -html=coverage.out -o coverage.html
 	xdg-open coverage.html
 

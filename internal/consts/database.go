@@ -4,4 +4,5 @@ package consts
 const (
 	DBLocation   = "internal/store/TJ.db"
 	DatabaseType = "sqlite"
+	TestDBName   = "++TEST++.db"
 )
