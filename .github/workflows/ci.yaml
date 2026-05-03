@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  GoTests:
     runs-on: ubunut-latest
     steps:
       - name: Checkout code
