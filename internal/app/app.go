@@ -5,8 +5,8 @@ import (
 	"flag"
 	appmodes "taskjrnl/internal/appModes"
 	"taskjrnl/internal/consts"
-	errors "taskjrnl/internal/errors"
 	"taskjrnl/internal/store"
+	taskjrnlErrors "taskjrnl/internal/taskjrnlErrors"
 )
 
 func bindStringToFunc(s *string) func(*sql.DB) error {
@@ -47,7 +47,7 @@ func App() error {
 	}
 
 	if requestedMode == "" {
-		return errors.ErrUsage
+		return taskjrnlErrors.ErrUsage
 	}
 
 	mode := bindStringToFunc(&requestedMode)

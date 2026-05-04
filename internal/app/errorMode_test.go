@@ -4,12 +4,12 @@ import (
 	"taskjrnl/internal/app"
 	"testing"
 
-	errors "taskjrnl/internal/errors"
+	taskjrnlErrors "taskjrnl/internal/taskjrnlErrors"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func Test_errorReturn(t *testing.T) {
 	err := app.NoCorrespondingMode(nil)
-	assert.Equal(t, err, errors.ErrUsage)
+	assert.Equal(t, err, taskjrnlErrors.ErrUsage)
 }

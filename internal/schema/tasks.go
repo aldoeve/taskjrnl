@@ -6,7 +6,7 @@ type Tasks struct {
 	Id                 int     // Auto-set, Not Null
 	Name               string  // Not Null
 	Tag                *string // Nullable
-	DateCreated        string  //Auto-set, Not Null
+	DateCreated        string  // Auto-set, Not Null
 	Priority           *string // Not Null
 	ImportanceVariance int     // Not Null
 }
