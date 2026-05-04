@@ -1,5 +1,5 @@
 run:
-	clip <(echo go run ./cmd/taskjrnl/ add "Hello")
+	go run ./cmd/taskjrnl/ add "Hello"
 
 help:
 	go run ./cmd/taskjrnl/ help
