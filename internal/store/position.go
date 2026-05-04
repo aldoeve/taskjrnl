@@ -1,16 +1,18 @@
 package store
 
 import (
+	"container/heap"
 	"database/sql"
-	"fmt"
 	schema "taskjrnl/internal/schema"
+	taskjrnlErrors "taskjrnl/internal/taskjrnlErrors"
+	util "taskjrnl/pkg/util"
 
 	_ "modernc.org/sqlite"
 )
 
-func cleanPositionsTable(db *sql.DB) error {
+func clearPositionsTable(db *sql.DB) error {
 	stmt := `
-	DELETE FROM Positions;
+		DELETE FROM Positions;
 	`
 
 	if _, err := db.Exec(stmt); err != nil {
@@ -20,26 +22,40 @@ func cleanPositionsTable(db *sql.DB) error {
 	return nil
 }
 
-func RearangePositions(db *sql.DB, task_id int64) error {
+func insertTaskIntoPosition(db *sql.DB, positionItem schema.Positions) error {
+	stmt := `
+		INSERT INTO Positions (task_id, position)
+		VALUES(?, ?); 
+	`
+	_, err := db.Exec(stmt, positionItem.TaskId, positionItem.Position)
+	if err != nil {
+		return err
+	}
 
-	if err := cleanPositionsTable(db); err != nil {
+	return nil
+}
+
+func RearangePositions(db *sql.DB) error {
+
+	if err := clearPositionsTable(db); err != nil {
 		return err
 	}
 
 	stmt := `
-	SELECT 
-	id, date_created, 
-	priority, importance_variance
-	FROM Tasks;
+		SELECT 
+		id, date_created, 
+		priority, importance_variance
+		FROM Tasks;
 	`
 	rows, err := db.Query(stmt)
 	if err != nil {
-		fmt.Println(err.Error())
 		return err
 	}
 	defer rows.Close()
 
-	// Define priority queue here
+	pq := &util.PositionPriorityQueue{}
+	heap.Init(pq)
+
 	for rows.Next() {
 		taskInfo := schema.Tasks{}
 
@@ -49,13 +65,31 @@ func RearangePositions(db *sql.DB, task_id int64) error {
 			&taskInfo.Priority,
 			&taskInfo.ImportanceVariance,
 		); err != nil {
-			fmt.Println(err.Error())
 			return err
 		}
-		//push onto pq
+
+		heap.Push(pq, &taskInfo)
 	}
 
-	//inset back into table till pq empty
+	var position int
+	for pq.Len() > 0 {
+		position++
+
+		taskId, ok := heap.Pop(pq).(int)
+		if !ok {
+			return taskjrnlErrors.HeapPanic
+		}
+
+		positionItem := schema.Positions{
+			TaskId:   taskId,
+			Position: position,
+		}
+
+		err = insertTaskIntoPosition(db, positionItem)
+		if err != nil {
+			return err
+		}
+	}
 
 	return nil
 }

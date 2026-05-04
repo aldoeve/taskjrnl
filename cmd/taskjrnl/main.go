@@ -5,15 +5,15 @@ import (
 	"os"
 
 	app "taskjrnl/internal/app"
-	errors "taskjrnl/internal/errors"
 	exitcodes "taskjrnl/internal/exitCodes"
+	taskjrnlErrors "taskjrnl/internal/taskjrnlErrors"
 )
 
 func checkForMinArgs() error {
 	const MinCountArgs = 1
 	numOfArgs := uint(len(os.Args[1:]))
 	if numOfArgs < MinCountArgs {
-		return errors.ErrTooFewArgs
+		return taskjrnlErrors.ErrTooFewArgs
 	}
 	return nil
 }

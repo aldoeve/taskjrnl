@@ -6,8 +6,8 @@ import (
 	"slices"
 	"strings"
 	"taskjrnl/internal/consts"
-	errors "taskjrnl/internal/errors"
 	store "taskjrnl/internal/store"
+	taskjrnlErrors "taskjrnl/internal/taskjrnlErrors"
 	util "taskjrnl/pkg/util"
 )
 
@@ -73,7 +73,7 @@ func (s *addParserState) consumeAndAssign(value string) error {
 			s.finalPriorityVal = value
 			s.mode = noMode
 		} else {
-			return errors.IncorrectFormat
+			return taskjrnlErrors.IncorrectFormat
 		}
 	case tagMode:
 		s.finalTagVal = value
@@ -92,29 +92,29 @@ func addTaskWithOptionalArgs(db *sql.DB, taskName string, optionalArgs []string)
 			state.figureOutMode(token)
 
 			if state.mode == noMode {
-				return errors.IncorrectFormat
+				return taskjrnlErrors.IncorrectFormat
 			}
 			if state.hasRepeatedKeywords() {
-				return errors.IncorrectFormat
+				return taskjrnlErrors.IncorrectFormat
 			}
 
 			value := state.stripKeyword(token)
 
 			if value != "" {
 				if state.consumeAndAssign(value) != nil {
-					return errors.IncorrectFormat
+					return taskjrnlErrors.IncorrectFormat
 				}
 			}
 
 		} else {
 			if state.consumeAndAssign(token) != nil {
-				return errors.IncorrectFormat
+				return taskjrnlErrors.IncorrectFormat
 			}
 		}
 	}
 
 	if state.mode != noMode {
-		return errors.IncorrectFormat
+		return taskjrnlErrors.IncorrectFormat
 	}
 
 	var (
@@ -137,7 +137,7 @@ func AddMode(db *sql.DB) error {
 	numArgs := len(userInput)
 
 	if numArgs < 1 {
-		return errors.ErrTooFewArgs
+		return taskjrnlErrors.ErrTooFewArgs
 	}
 
 	var err error

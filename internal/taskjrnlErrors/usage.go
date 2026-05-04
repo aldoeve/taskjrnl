@@ -1,4 +1,4 @@
-package errors
+package taskjrnlErrors
 
 import "errors"
 

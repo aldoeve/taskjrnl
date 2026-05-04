@@ -1,5 +1,5 @@
 // The package errors contains custom errors made for debugging this application.
-package errors
+package taskjrnlErrors
 
 import "errors"
 

@@ -2,9 +2,9 @@ package app
 
 import (
 	"database/sql"
-	errors "taskjrnl/internal/errors"
+	taskjrnlErrors "taskjrnl/internal/taskjrnlErrors"
 )
 
 func NoCorrespondingMode(_ *sql.DB) error {
-	return errors.ErrUsage
+	return taskjrnlErrors.ErrUsage
 }
