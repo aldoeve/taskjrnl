@@ -26,6 +26,7 @@ func drawHelp() {
 	commands := []Command{
 		{appmodes.Help, "Show help"},
 		{appmodes.Add, "Adds task. <taskName> [priority:L|M|H] [tag:\"string\"] "},
+		{appmodes.List, "Lists all tasks"},
 	}
 	flags := []Flag{
 		{"-h,--help", "Show Help"},
