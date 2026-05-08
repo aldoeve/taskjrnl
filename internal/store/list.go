@@ -7,7 +7,7 @@ import (
 	_ "modernc.org/sqlite"
 )
 
-func ListAllTasks(db *sql.DB) ([]schema.Tasks, error) {
+func FetchAllTasks(db *sql.DB) ([]schema.Tasks, error) {
 	var tasks []schema.Tasks
 
 	stmt := `
