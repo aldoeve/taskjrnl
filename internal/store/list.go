@@ -2,19 +2,24 @@ package store
 
 import (
 	"database/sql"
-	"fmt"
 	schema "taskjrnl/internal/schema"
 
 	_ "modernc.org/sqlite"
 )
 
-func ListAllTasks(db *sql.DB) error {
+func FetchAllTasks(db *sql.DB) ([]schema.Tasks, error) {
+	var tasks []schema.Tasks
+
 	stmt := `
-		SELECT name, tag, create_date, priority FROM Tasks;
+		SELECT T.name, T.tag, T.date_created, T.priority 
+		FROM Tasks AS T
+		INNER JOIN Positions AS P
+			ON T.id = P.task_id
+		ORDER BY P.position;
 	`
 	rows, err := db.Query(stmt)
 	if err != nil {
-		return err
+		return tasks, err
 	}
 	defer rows.Close()
 
@@ -27,9 +32,10 @@ func ListAllTasks(db *sql.DB) error {
 			&task.DateCreated,
 			&task.Priority,
 		); err != nil {
-			return err
+			return tasks, err
 		}
-		fmt.Println(task.Name, task.Tag, task.DateCreated, task.Priority)
+
+		tasks = append(tasks, task)
 	}
-	return nil
+	return tasks, nil
 }
