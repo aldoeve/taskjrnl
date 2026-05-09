@@ -11,8 +11,8 @@ import (
 	"charm.land/lipgloss/v2/table"
 )
 
-// Draws tasks to stdout.
-func drawTasks(tasks []schema.Tasks) error {
+// Returns a pointer to a setup lipgloss table.
+func generateTable() *table.Table {
 	headers := []string{"Position", "Priority", "Tag", "Task", "Date Created"}
 	t := table.New().
 		Border(lipgloss.NormalBorder()).
@@ -28,6 +28,13 @@ func drawTasks(tasks []schema.Tasks) error {
 			}
 		}).
 		Headers(headers...)
+
+	return t
+}
+
+// Draws tasks to stdout.
+func drawTasks(tasks []schema.Tasks) error {
+	t := generateTable()
 
 	var position int
 	for _, task := range tasks {
