@@ -9,17 +9,21 @@ import (
 	_ "modernc.org/sqlite"
 )
 
+// Returns true on database file existing.
 func isDBExists(dbLocation string) bool {
 	_, err := os.Stat(dbLocation)
 	return err == nil
 }
 
+// Returns a connection to the database.
 func DBconnection(dbLocation string) (*sql.DB, error) {
 	isNewDB := !isDBExists(dbLocation)
+
 	db, err := sql.Open(consts.DatabaseType, dbLocation)
 	if isNewDB && err == nil {
 		err = initSchema(db)
 	}
+
 	if err == nil {
 		_, _ = db.Exec("PRAGMA journal_mode=WAL;")
 		_, err = db.Exec("PRAGMA foreign_keys=ON;")
@@ -28,6 +32,7 @@ func DBconnection(dbLocation string) (*sql.DB, error) {
 	return db, err
 }
 
+// Creates the database's tables.
 func initSchema(db *sql.DB) error {
 	schema := `
 	CREATE TABLE IF NOT EXISTS Tasks (

@@ -8,6 +8,7 @@ import (
 	_ "modernc.org/sqlite"
 )
 
+// Inserts task into the database.
 func insertTask(db *sql.DB, task schema.Tasks) error {
 	stmt := `
 		INSERT INTO Tasks (name, tag, priority, importance_variance)
@@ -21,7 +22,7 @@ func insertTask(db *sql.DB, task schema.Tasks) error {
 	return RearangePositions(db)
 }
 
-// Creates and inserts a single task into the database. Pointer parameters are optional so nil means to chose defaults.
+// Creates a single task and saves it. Pointer parameters are optional so nil is equivalent to choosing defaults.
 func CreateTask(db *sql.DB, taskName string, tag *string, priority *string) error {
 	finalPriority := consts.LowPriority
 

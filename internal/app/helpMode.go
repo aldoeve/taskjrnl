@@ -15,11 +15,7 @@ type BaseArgStruct struct {
 type Command = BaseArgStruct
 type Flag = BaseArgStruct
 
-func HelpMode(_ *sql.DB) error {
-	drawHelp()
-	return nil
-}
-
+// Draws to stdout.
 func drawHelp() {
 	const defaultPadding = 10
 
@@ -55,4 +51,10 @@ func drawHelp() {
 
 	output := lipgloss.JoinVertical(lipgloss.Top, helpOutput...)
 	fmt.Println(output)
+}
+
+// Draws the help output.
+func HelpMode(_ *sql.DB) error {
+	drawHelp()
+	return nil
 }

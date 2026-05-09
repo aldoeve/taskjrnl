@@ -11,6 +11,7 @@ import (
 	"charm.land/lipgloss/v2/table"
 )
 
+// Draws tasks to stdout.
 func drawTasks(tasks []schema.Tasks) error {
 	headers := []string{"Position", "Priority", "Tag", "Task", "Date Created"}
 	t := table.New().
@@ -28,7 +29,6 @@ func drawTasks(tasks []schema.Tasks) error {
 		}).
 		Headers(headers...)
 
-	// Tasks are already in order from most important to least.
 	var position int
 	for _, task := range tasks {
 		position++
@@ -52,6 +52,7 @@ func drawTasks(tasks []schema.Tasks) error {
 	return err
 }
 
+// Draws the tasks to the command line in order of most important first.
 func ListMode(db *sql.DB) error {
 	tasks, err := store.FetchAllTasks(db)
 	if err != nil {

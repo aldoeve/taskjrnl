@@ -7,6 +7,7 @@ import (
 	_ "modernc.org/sqlite"
 )
 
+// Returns array containing every task ordered by most important first.
 func FetchAllTasks(db *sql.DB) ([]schema.Tasks, error) {
 	var tasks []schema.Tasks
 
