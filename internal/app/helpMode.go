@@ -2,8 +2,8 @@ package app
 
 import (
 	"database/sql"
-	"fmt"
 	appmodes "taskjrnl/internal/appModes"
+	"taskjrnl/internal/consts"
 
 	"charm.land/lipgloss/v2"
 )
@@ -15,45 +15,60 @@ type BaseArgStruct struct {
 type Command = BaseArgStruct
 type Flag = BaseArgStruct
 
-// Draws to stdout.
+// Draws help output to stdout.
 func drawHelp() {
-	const defaultPadding = 10
+	titleAppName := consts.HelpTitleStyle.Render("taskjrnl")
+	titleAppDesc := consts.HelpOptionsText.Render(" — a simple command line task & journal")
+	finalTitle := lipgloss.JoinHorizontal(lipgloss.Left, titleAppName, titleAppDesc)
 
+	usageTabTitle := consts.HelpTitleStyle.Render("Usage:")
+	usageText := consts.HelpUsageText.Render("\n\ttaskjrnl | task [options] <command>")
+	finalUsage := lipgloss.JoinVertical(lipgloss.Left, usageTabTitle, usageText)
+
+	commandsSection := consts.HelpTitleStyle.Render("Commands:")
 	commands := []Command{
 		{appmodes.Help, "Show help"},
-		{appmodes.Add, "Adds task. <taskName> [priority:L|M|H] [tag:\"string\"] "},
+		{appmodes.Add, "Adds task. <taskName> [priority:L|M|H] [tag:\"string\"]"},
 		{appmodes.List, "Lists all tasks"},
 	}
+
+	for _, commandObj := range commands {
+		command := consts.HelpCommandsNFlagsText.Render("\t" + commandObj.name)
+		commandUsageDesc := consts.HelpUsageText.Render(commandObj.usage)
+		commandRow := lipgloss.JoinHorizontal(lipgloss.Left, command, commandUsageDesc)
+
+		commandsSection = lipgloss.JoinVertical(lipgloss.Left, commandsSection, commandRow)
+	}
+
+	optionsSection := consts.HelpTitleStyle.Render("Options:")
 	flags := []Flag{
-		{"-h,--help", "Show Help"},
+		{"-h, --help", "Show help"},
 	}
 
-	helpOutput := []string{
-		"\ntaskjrnl - a simple command line task journal",
-		"Usage:",
-		"\ttaskjrnl|task [options] <command>",
+	for _, flagObj := range flags {
+		flagName := consts.HelpCommandsNFlagsText.Render("\t" + flagObj.name)
+		flagUsageDesc := consts.HelpUsageText.Render(flagObj.usage)
+		flagRow := lipgloss.JoinHorizontal(lipgloss.Left, flagName, flagUsageDesc)
+
+		optionsSection = lipgloss.JoinVertical(lipgloss.Left, optionsSection, flagRow)
+	}
+
+	final := lipgloss.JoinVertical(
+		lipgloss.Left,
+		finalTitle,
 		"\n",
-		"Commands:",
-	}
+		finalUsage,
+		"\n",
+		commandsSection,
+		"\n",
+		optionsSection,
+		"\n",
+	)
 
-	formatCMDorFlagArrays := func(array []BaseArgStruct, padding int) []string {
-		var paddedStrings []string
-		for _, arg := range array {
-			paddedStrings = append(paddedStrings, fmt.Sprintf("\t%-*s %-s", padding, arg.name, arg.usage))
-		}
-		return paddedStrings
-	}
-
-	helpOutput = append(helpOutput, formatCMDorFlagArrays(commands, defaultPadding)...)
-	helpOutput = append(helpOutput, "Options:")
-	helpOutput = append(helpOutput, formatCMDorFlagArrays(flags, defaultPadding)...)
-	helpOutput = append(helpOutput, "\n")
-
-	output := lipgloss.JoinVertical(lipgloss.Top, helpOutput...)
-	fmt.Println(output)
+	lipgloss.Println(final)
 }
 
-// Draws the help output.
+// Calls the help drawer.
 func HelpMode(_ *sql.DB) error {
 	drawHelp()
 	return nil

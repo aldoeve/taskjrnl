@@ -3,6 +3,7 @@ package app
 import (
 	"database/sql"
 	"strconv"
+	"taskjrnl/internal/config"
 	"taskjrnl/internal/consts"
 	"taskjrnl/internal/schema"
 	store "taskjrnl/internal/store"
@@ -16,7 +17,7 @@ func generateTable() *table.Table {
 	headers := []string{"Position", "Priority", "Tag", "Task", "Date Created"}
 	t := table.New().
 		Border(lipgloss.NormalBorder()).
-		BorderStyle(lipgloss.NewStyle().Foreground(consts.Vermilian)).
+		BorderStyle(lipgloss.NewStyle().Foreground(config.Vermilian)).
 		StyleFunc(func(row, col int) lipgloss.Style {
 			switch {
 			case row == table.HeaderRow:
