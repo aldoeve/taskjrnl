@@ -3,6 +3,7 @@ package app
 import (
 	"database/sql"
 	"strconv"
+	"taskjrnl/internal/config"
 	"taskjrnl/internal/consts"
 	"taskjrnl/internal/schema"
 	store "taskjrnl/internal/store"
@@ -11,11 +12,12 @@ import (
 	"charm.land/lipgloss/v2/table"
 )
 
-func drawTasks(tasks []schema.Tasks) error {
+// Returns a pointer to a setup lipgloss table.
+func generateTable() *table.Table {
 	headers := []string{"Position", "Priority", "Tag", "Task", "Date Created"}
 	t := table.New().
 		Border(lipgloss.NormalBorder()).
-		BorderStyle(lipgloss.NewStyle().Foreground(consts.Vermilian)).
+		BorderStyle(lipgloss.NewStyle().Foreground(config.Vermilian)).
 		StyleFunc(func(row, col int) lipgloss.Style {
 			switch {
 			case row == table.HeaderRow:
@@ -28,7 +30,13 @@ func drawTasks(tasks []schema.Tasks) error {
 		}).
 		Headers(headers...)
 
-	// Tasks are already in order from most important to least.
+	return t
+}
+
+// Draws tasks to stdout.
+func drawTasks(tasks []schema.Tasks) error {
+	t := generateTable()
+
 	var position int
 	for _, task := range tasks {
 		position++
@@ -52,6 +60,7 @@ func drawTasks(tasks []schema.Tasks) error {
 	return err
 }
 
+// Draws the tasks to the command line in order of most important first.
 func ListMode(db *sql.DB) error {
 	tasks, err := store.FetchAllTasks(db)
 	if err != nil {

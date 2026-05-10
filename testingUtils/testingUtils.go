@@ -1,3 +1,4 @@
+// Package testingutils holds testing utility functions.
 package testingutils
 
 import (
@@ -9,6 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// Returns a string of the captured stdout.
 func CaptureOutput(t *testing.T, f func()) string {
 	t.Helper()
 

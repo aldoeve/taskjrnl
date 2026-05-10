@@ -10,6 +10,7 @@ import (
 	_ "modernc.org/sqlite"
 )
 
+// Deletes every row in the Positions table.
 func clearPositionsTable(db *sql.DB) error {
 	stmt := `
 		DELETE FROM Positions;
@@ -22,6 +23,7 @@ func clearPositionsTable(db *sql.DB) error {
 	return nil
 }
 
+// Inserts task_id and its corresponding position into the Positions table.
 func insertTaskIntoPosition(db *sql.DB, positionItem schema.Positions) error {
 	stmt := `
 		INSERT INTO Positions (task_id, position)
@@ -35,6 +37,7 @@ func insertTaskIntoPosition(db *sql.DB, positionItem schema.Positions) error {
 	return nil
 }
 
+// Fixes the Positions table's ordering.
 func RearangePositions(db *sql.DB) error {
 
 	if err := clearPositionsTable(db); err != nil {
@@ -53,6 +56,7 @@ func RearangePositions(db *sql.DB) error {
 	}
 	defer rows.Close()
 
+	// Insertion into max priority queue to sort tasks' importances.
 	pq := &util.PositionPriorityQueue{}
 	heap.Init(pq)
 

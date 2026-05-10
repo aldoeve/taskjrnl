@@ -9,6 +9,7 @@ import (
 	taskjrnlErrors "taskjrnl/internal/taskjrnlErrors"
 )
 
+// Returns the function that matches the string.
 func bindStringToFunc(s *string) func(*sql.DB) error {
 	modeHandlers := map[string]func(*sql.DB) error{
 		appmodes.Add:    AddMode,
@@ -25,6 +26,7 @@ func bindStringToFunc(s *string) func(*sql.DB) error {
 	return NoCorrespondingMode
 }
 
+// Core appliction logic that swaps between modes.
 func App() error {
 	help := flag.Bool("help", false, "Show help")
 	h := flag.Bool("h", false, "Show help")
@@ -60,6 +62,9 @@ func App() error {
 
 	return mode(db)
 }
+
+// Functions below this line are still not implemented.
+
 func Done(_ *sql.DB) error {
 	return nil
 }
