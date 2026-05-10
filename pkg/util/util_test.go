@@ -49,7 +49,7 @@ func Test_ArgsAfterKeyword_keywordWithTokens(t *testing.T) {
 }
 
 func Test_CalculateImportance_default(t *testing.T) {
-	currentTime := time.Now()
+	currentTime := time.Now().UTC()
 	priority := "L"
 
 	task := schema.Tasks{
@@ -67,7 +67,7 @@ func Test_CalculateImportance_default(t *testing.T) {
 }
 
 func Test_CalculateImportance_24HrsPassed(t *testing.T) {
-	fiveHoursAgo := time.Now().Add(-24 * time.Hour)
+	fiveHoursAgo := time.Now().UTC().Add(-24 * time.Hour)
 	priority := "L"
 
 	task := schema.Tasks{
@@ -85,7 +85,7 @@ func Test_CalculateImportance_24HrsPassed(t *testing.T) {
 }
 
 func Test_CalculateImportance_differentPriorites(t *testing.T) {
-	currentTime := time.Now()
+	currentTime := time.Now().UTC()
 	priority := "L"
 
 	task := schema.Tasks{
@@ -115,7 +115,7 @@ func Test_CalculateImportance_differentPriorites(t *testing.T) {
 }
 
 func Test_CalculateImportance_variance(t *testing.T) {
-	currentTime := time.Now()
+	currentTime := time.Now().UTC()
 	priority := "L"
 
 	task := schema.Tasks{
@@ -133,7 +133,7 @@ func Test_CalculateImportance_variance(t *testing.T) {
 }
 
 func Test_CalculateImportance_everything(t *testing.T) {
-	threeDaysAgo := time.Now().Add((-24 * 3) * time.Hour)
+	threeDaysAgo := time.Now().UTC().Add((-24 * 3) * time.Hour)
 	priority := "M"
 
 	task := schema.Tasks{

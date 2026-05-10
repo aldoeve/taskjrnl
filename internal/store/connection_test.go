@@ -10,8 +10,7 @@ import (
 )
 
 func Test_establishConnToNewDB(t *testing.T) {
-	tempDir := t.TempDir()
-	dbLocation := filepath.Join(tempDir, consts.TestDBName)
+	dbLocation := filepath.Join(t.TempDir(), consts.TestDBName)
 
 	conn, err := store.DBconnection(dbLocation)
 
