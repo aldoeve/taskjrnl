@@ -28,8 +28,8 @@ func Test_createAndInsertTaskPlain(t *testing.T) {
 	assert.Nil(t, err)
 
 	stmt := `
-	SELECT * 
-	FROM Tasks;
+		SELECT * 
+		FROM Tasks;
 	`
 
 	rows, err := db.Query(stmt)
@@ -81,8 +81,8 @@ func Test_createAndInsertTaskTag(t *testing.T) {
 	assert.Nil(t, err)
 
 	stmt := `
-	SELECT * 
-	FROM Tasks;
+		SELECT * 
+		FROM Tasks;
 	`
 
 	rows, err := db.Query(stmt)
@@ -135,8 +135,8 @@ func Test_createAndInsertTaskPriority(t *testing.T) {
 	assert.Nil(t, err)
 
 	stmt := `
-	SELECT * 
-	FROM Tasks;
+		SELECT * 
+		FROM Tasks;
 	`
 
 	rows, err := db.Query(stmt)
@@ -191,8 +191,8 @@ func Test_createAndInsertTaskFull(t *testing.T) {
 	assert.Nil(t, err)
 
 	stmt := `
-	SELECT * 
-	FROM Tasks;
+		SELECT * 
+		FROM Tasks;
 	`
 
 	rows, err := db.Query(stmt)
