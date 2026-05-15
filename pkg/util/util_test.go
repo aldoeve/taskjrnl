@@ -1,3 +1,4 @@
+// Package util_test tests the applications utility functions.
 package util_test
 
 import (

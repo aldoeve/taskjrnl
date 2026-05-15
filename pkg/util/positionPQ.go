@@ -47,6 +47,7 @@ func (pq *PositionPriorityQueue) Pop() any {
 	return positonItem.taskId
 }
 
+// Unused by application.
 /* func (pq *PositionPriorityQueue) update(positionItem *PositonItem, taskId int, importance int) {
 	positionItem.taskId = taskId
 	positionItem.importance = importance

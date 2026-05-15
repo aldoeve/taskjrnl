@@ -1,3 +1,4 @@
+// Package testingutils_test tests the testing utilities.
 package testingutils_test
 
 import (

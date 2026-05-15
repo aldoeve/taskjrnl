@@ -34,6 +34,7 @@ type addParserState struct {
 	finalTagVal      string
 }
 
+// Figures out what keyword its looking at and sets the mode.
 func (s *addParserState) figureOutMode(token string) {
 	if strings.HasPrefix(token, priorityKeyword) {
 		s.mode = priorityMode
@@ -44,6 +45,7 @@ func (s *addParserState) figureOutMode(token string) {
 	}
 }
 
+// Returns if any keyword has appeared more than once.
 func (s *addParserState) hasRepeatedKeywords() bool {
 	inPriority := (s.mode == priorityMode)
 	inTag := (s.mode == tagMode)
@@ -57,6 +59,7 @@ func (s *addParserState) hasRepeatedKeywords() bool {
 	return repeatedPriority || repeatedTag
 }
 
+// Returns string with the seen keyword removed. I.E. The right hand-side of the keyword.
 func (s *addParserState) stripKeyword(token string) string {
 	if s.mode == priorityMode {
 		return strings.TrimPrefix(token, priorityKeyword)
@@ -64,6 +67,7 @@ func (s *addParserState) stripKeyword(token string) string {
 	return strings.TrimPrefix(token, tagKeyword)
 }
 
+// Consumes a token and matches it to the corresponding mode.
 func (s *addParserState) consumeAndAssign(value string) error {
 
 	switch s.mode {
@@ -83,6 +87,7 @@ func (s *addParserState) consumeAndAssign(value string) error {
 	return nil
 }
 
+// Basic Parser to figure out what to add to the database.
 func addTaskWithOptionalArgs(db *sql.DB, taskName string, optionalArgs []string) error {
 
 	state := addParserState{}
@@ -132,6 +137,7 @@ func addTaskWithOptionalArgs(db *sql.DB, taskName string, optionalArgs []string)
 	return store.CreateTask(db, taskName, sanitizedTag, sanitizedPriority)
 }
 
+// Add logic to the application. Adds a task.
 func AddMode(db *sql.DB) error {
 	userInput := util.ArgsAfterKeyword()
 	numArgs := len(userInput)

@@ -2,9 +2,71 @@ package app
 
 import (
 	"database/sql"
-	"taskjrnl/internal/store"
+	"strconv"
+	"taskjrnl/internal/config"
+	"taskjrnl/internal/consts"
+	"taskjrnl/internal/schema"
+	store "taskjrnl/internal/store"
+
+	"charm.land/lipgloss/v2"
+	"charm.land/lipgloss/v2/table"
 )
 
+// Returns a pointer to a setup lipgloss table.
+func generateTable() *table.Table {
+	headers := []string{"Position", "Priority", "Tag", "Task", "Date Created"}
+	t := table.New().
+		Border(lipgloss.NormalBorder()).
+		BorderStyle(lipgloss.NewStyle().Foreground(config.Vermilian)).
+		StyleFunc(func(row, col int) lipgloss.Style {
+			switch {
+			case row == table.HeaderRow:
+				return consts.HeaderStyle
+			case row%2 == 0:
+				return consts.EvenRowStyle
+			default:
+				return consts.OddRowStyle
+			}
+		}).
+		Headers(headers...)
+
+	return t
+}
+
+// Draws tasks to stdout.
+func drawTasks(tasks []schema.Tasks) error {
+	t := generateTable()
+
+	var position int
+	for _, task := range tasks {
+		position++
+
+		var (
+			priority string
+			tag      string
+		)
+
+		if task.Priority != nil {
+			priority = *task.Priority
+		}
+		if task.Tag != nil {
+			tag = *task.Tag
+		}
+
+		t.Row(strconv.Itoa(position), priority, tag, task.Name, task.DateCreated)
+	}
+
+	_, err := lipgloss.Println(t)
+	return err
+}
+
+// Draws the tasks to the command line in order of most important first.
 func ListMode(db *sql.DB) error {
-	return store.ListAllTasks(db)
+	tasks, err := store.FetchAllTasks(db)
+	if err != nil {
+		return err
+	}
+
+	err = drawTasks(tasks)
+	return err
 }

@@ -9,19 +9,21 @@ import (
 	"time"
 )
 
+// Returns the flags with the first token discarded.
 // This function assumes the first token is a keyword and discards it.
 func ArgsAfterKeyword() []string {
 	return flag.Args()[1:]
 }
 
-var PriorityValue = map[string]int{
+var priorityValue = map[string]int{
 	consts.LowPriority:  0,
 	consts.MidPriority:  1000,
 	consts.HighPriority: 2000,
 }
 
+// Returns the importance of a task. The higher the number the more important.
 func CalculateImportance(task *schema.Tasks) int {
-	priority := PriorityValue[*task.Priority]
+	priority := priorityValue[*task.Priority]
 
 	var daysSinceCreation int
 	layout := config.TimeFormat // SQLite TEXT format.
