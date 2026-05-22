@@ -5,22 +5,34 @@ import (
 	"bytes"
 	"io"
 	"os"
+	"syscall"
 	"testing"
+
+	"github.com/acarl005/stripansi"
 
 	"github.com/stretchr/testify/assert"
 )
 
 // Returns a string of the captured stdout.
-func CaptureOutput(t *testing.T, f func()) string {
+func CaptureOutput[T any](t *testing.T, f func(T) error, arg T) string {
 	t.Helper()
 
-	old := os.Stdout
 	r, w, err := os.Pipe()
 	assert.Nil(t, err)
 
-	os.Stdout = w
+	oldFd, err := syscall.Dup(int(os.Stdout.Fd()))
+	assert.Nil(t, err)
 
-	f()
+	err = syscall.Dup2(int(w.Fd()), int(os.Stdout.Fd()))
+	assert.Nil(t, err)
+
+	err = f(arg)
+	assert.Nil(t, err)
+
+	err = syscall.Dup2(oldFd, int(os.Stdout.Fd()))
+	assert.Nil(t, err)
+	err = syscall.Close(oldFd)
+	assert.Nil(t, err)
 
 	err = w.Close()
 	assert.Nil(t, err)
@@ -28,7 +40,6 @@ func CaptureOutput(t *testing.T, f func()) string {
 	var buf bytes.Buffer
 	_, err = io.Copy(&buf, r)
 	assert.Nil(t, err)
-	os.Stdout = old
 
-	return buf.String()
+	return stripansi.Strip(buf.String())
 }

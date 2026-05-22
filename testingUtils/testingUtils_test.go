@@ -2,6 +2,7 @@
 package testingutils_test
 
 import (
+	"database/sql"
 	"fmt"
 	testingutils "taskjrnl/testingUtils"
 	"testing"
@@ -9,12 +10,15 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_captureOutput(t *testing.T) {
-	const expectedOutput = "Hello"
+const expectedOutput = "Hello"
 
-	actualOutput := testingutils.CaptureOutput(t,
-		func() { fmt.Print(expectedOutput) },
-	)
+func simpleOut(_ *sql.DB) error {
+	fmt.Print(expectedOutput)
+	return nil
+}
+func Test_captureOutput(t *testing.T) {
+
+	actualOutput := testingutils.CaptureOutput(t, simpleOut, nil)
 
 	assert.Equal(t, expectedOutput, actualOutput)
 }
