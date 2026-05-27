@@ -76,6 +76,8 @@ func drawHelp() {
 		"\n",
 	)
 
+	final = consts.HelpBorder.Render(final)
+
 	lipgloss.Println(final)
 }
 

@@ -13,7 +13,7 @@ import (
 func bindStringToFunc(s *string) func(*sql.DB) error {
 	modeHandlers := map[string]func(*sql.DB) error{
 		appmodes.Add:    AddMode,
-		appmodes.Done:   Done,
+		appmodes.Done:   DoneMode,
 		appmodes.Help:   HelpMode,
 		appmodes.Jrnl:   Jrnl,
 		appmodes.List:   ListMode,
@@ -65,9 +65,6 @@ func App() error {
 
 // Functions below this line are still not implemented.
 
-func Done(_ *sql.DB) error {
-	return nil
-}
 func Jrnl(_ *sql.DB) error {
 	return nil
 }

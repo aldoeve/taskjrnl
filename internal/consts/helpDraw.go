@@ -20,4 +20,8 @@ var (
 
 	HelpCommandsNFlagsText = HelpOptionsText.
 				Width(20)
+
+	HelpBorder = lipgloss.NewStyle().
+			Border(lipgloss.RoundedBorder()).
+			BorderForeground(config.Vermilian)
 )
