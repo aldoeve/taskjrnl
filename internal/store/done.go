@@ -5,6 +5,7 @@ import (
 	"taskjrnl/internal/store/queries"
 )
 
+// Removes a task and its refrences.
 func RemoveTask(db *sql.DB, position_id int) error {
 	stmt := queries.SelectTaskIdGivenPositionSQL
 	var task_id int
