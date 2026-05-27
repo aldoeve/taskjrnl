@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"os"
 	consts "taskjrnl/internal/consts"
+	"taskjrnl/internal/store/queries"
 
 	_ "modernc.org/sqlite"
 )
@@ -25,8 +26,8 @@ func DBconnection(dbLocation string) (*sql.DB, error) {
 	}
 
 	if err == nil {
-		_, _ = db.Exec("PRAGMA journal_mode=WAL;")
-		_, err = db.Exec("PRAGMA foreign_keys=ON;")
+		_, _ = db.Exec(queries.JournalModeWAL)
+		_, err = db.Exec(queries.ForeignKeysON)
 	}
 
 	return db, err
@@ -34,24 +35,6 @@ func DBconnection(dbLocation string) (*sql.DB, error) {
 
 // Creates the database's tables.
 func initSchema(db *sql.DB) error {
-	schema := `
-	CREATE TABLE IF NOT EXISTS Tasks (
-		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		name TEXT NOT NULL,
-		tag TEXT,
-		date_created TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-		priority CHAR(1) NOT NULL CHECK(priority IN('L', 'M','H')),
-		importance_variance INTEGER NOT NULL
-	);
-
-	CREATE TABLE IF NOT EXISTS Positions (
-		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		task_id INTEGER NOT NULL,
-		position INTEGER NOT NULL,
-		FOREIGN KEY (task_id) REFERENCES Tasks(id)
-	)
-	`
-	_, err := db.Exec(schema)
-
+	_, err := db.Exec(queries.SchemaSQL)
 	return err
 }

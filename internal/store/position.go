@@ -4,6 +4,7 @@ import (
 	"container/heap"
 	"database/sql"
 	schema "taskjrnl/internal/schema"
+	"taskjrnl/internal/store/queries"
 	taskjrnlErrors "taskjrnl/internal/taskjrnlErrors"
 	util "taskjrnl/pkg/util"
 
@@ -12,9 +13,7 @@ import (
 
 // Deletes every row in the Positions table.
 func clearPositionsTable(db *sql.DB) error {
-	stmt := `
-		DELETE FROM Positions;
-	`
+	const stmt = queries.DeletePositionsRowsSQL
 
 	if _, err := db.Exec(stmt); err != nil {
 		return err
@@ -25,10 +24,8 @@ func clearPositionsTable(db *sql.DB) error {
 
 // Inserts task_id and its corresponding position into the Positions table.
 func insertTaskIntoPosition(db *sql.DB, positionItem schema.Positions) error {
-	stmt := `
-		INSERT INTO Positions (task_id, position)
-		VALUES(?, ?); 
-	`
+	const stmt = queries.InsertSinglePositionRowSQL
+
 	_, err := db.Exec(stmt, positionItem.TaskId, positionItem.Position)
 	if err != nil {
 		return err
@@ -44,12 +41,7 @@ func RearangePositions(db *sql.DB) error {
 		return err
 	}
 
-	stmt := `
-		SELECT 
-		id, date_created, 
-		priority, importance_variance
-		FROM Tasks;
-	`
+	const stmt = queries.SelectPositionsDataFromTasksSQL
 	rows, err := db.Query(stmt)
 	if err != nil {
 		return err

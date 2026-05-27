@@ -3,6 +3,7 @@ package store
 import (
 	"database/sql"
 	schema "taskjrnl/internal/schema"
+	"taskjrnl/internal/store/queries"
 
 	_ "modernc.org/sqlite"
 )
@@ -11,13 +12,7 @@ import (
 func FetchAllTasks(db *sql.DB) ([]schema.Tasks, error) {
 	var tasks []schema.Tasks
 
-	stmt := `
-		SELECT T.name, T.tag, T.date_created, T.priority 
-		FROM Tasks AS T
-		INNER JOIN Positions AS P
-			ON T.id = P.task_id
-		ORDER BY P.position;
-	`
+	const stmt = queries.SelectRelavantOrderedListInfoSQL
 	rows, err := db.Query(stmt)
 	if err != nil {
 		return tasks, err
