@@ -2,6 +2,7 @@ package app
 
 import (
 	"database/sql"
+	"fmt"
 	"strconv"
 	"taskjrnl/internal/store"
 	"taskjrnl/internal/taskjrnlErrors"
@@ -23,6 +24,9 @@ func DoneMode(db *sql.DB) error {
 	}
 
 	err = store.RemoveTask(db, userCompletedTaskId)
+	if err == sql.ErrNoRows {
+		fmt.Println()
+	}
 	if err != nil {
 		return err
 	}
