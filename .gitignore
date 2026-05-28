@@ -33,3 +33,6 @@ go.work.sum
 
 # Databases
 /internal/store/*.db
+
+# Bianary
+taskjrnl
