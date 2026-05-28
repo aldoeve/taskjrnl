@@ -19,7 +19,7 @@ coverage:
 	xdg-open coverage.html
 
 clean:
-	rm -f ./internal/store/TJ.db
+	rm -f TJ.db
 	rm -f coverage.out
 	rm -f coverage.html
 	

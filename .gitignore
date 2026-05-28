@@ -32,7 +32,7 @@ go.work.sum
 # .vscode/
 
 # Databases
-/internal/store/*.db
+*.db
 
 # Bianary
 taskjrnl
