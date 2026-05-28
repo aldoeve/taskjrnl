@@ -59,7 +59,7 @@ func drawHelp() {
 	finalTitle := lipgloss.JoinHorizontal(lipgloss.Left, titleAppName, titleAppDesc, version)
 
 	usageTabTitle := consts.HelpTitleStyle.Render("Usage:")
-	usageText := consts.HelpUsageText.Render("\n\ttaskjrnl | task [options] <command>")
+	usageText := consts.HelpUsageText.Render("\n\ttaskjrnl [options] <command>")
 	finalUsage := lipgloss.JoinVertical(lipgloss.Left, usageTabTitle, usageText)
 
 	commandsSection := buildCommnadsSection()
