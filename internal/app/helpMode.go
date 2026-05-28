@@ -3,6 +3,7 @@ package app
 import (
 	"database/sql"
 	appmodes "taskjrnl/internal/appModes"
+	"taskjrnl/internal/config"
 	"taskjrnl/internal/consts"
 
 	"charm.land/lipgloss/v2"
@@ -54,10 +55,11 @@ func buildCommnadsSection() string {
 func drawHelp() {
 	titleAppName := consts.HelpTitleStyle.Render("taskjrnl")
 	titleAppDesc := consts.HelpOptionsText.Render(" — a simple command line task & journal")
-	finalTitle := lipgloss.JoinHorizontal(lipgloss.Left, titleAppName, titleAppDesc)
+	version := consts.HelpOptionsText.Render(config.Version)
+	finalTitle := lipgloss.JoinHorizontal(lipgloss.Left, titleAppName, titleAppDesc, version)
 
 	usageTabTitle := consts.HelpTitleStyle.Render("Usage:")
-	usageText := consts.HelpUsageText.Render("\n\ttaskjrnl | task [options] <command>")
+	usageText := consts.HelpUsageText.Render("\n\ttaskjrnl [options] <command>")
 	finalUsage := lipgloss.JoinVertical(lipgloss.Left, usageTabTitle, usageText)
 
 	commandsSection := buildCommnadsSection()
