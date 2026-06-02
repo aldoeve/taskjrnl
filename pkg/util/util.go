@@ -3,6 +3,8 @@ package util
 
 import (
 	"flag"
+	"os"
+	"path/filepath"
 	"taskjrnl/internal/config"
 	consts "taskjrnl/internal/consts"
 	schema "taskjrnl/internal/schema"
@@ -36,4 +38,20 @@ func CalculateImportance(task *schema.Tasks) int {
 	finalCalculation := priority + daysSinceCreation + task.ImportanceVariance
 
 	return finalCalculation
+}
+
+// Creates the applications directory if needed and returns the directory as a string.
+func CreateAppDir(applicationName string) (string, error) {
+	configDir, err := os.UserConfigDir()
+	if err != nil {
+		return "", err
+	}
+
+	appDir := filepath.Join(configDir, applicationName)
+	err = os.Mkdir(appDir, 0755)
+	if err != nil {
+		return "", err
+	}
+
+	return appDir, nil
 }
