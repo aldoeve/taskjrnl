@@ -48,7 +48,7 @@ func CreateAppDir(applicationName string) (string, error) {
 	}
 
 	appDir := filepath.Join(configDir, applicationName)
-	err = os.Mkdir(appDir, 0755)
+	err = os.MkdirAll(appDir, 0755)
 	if err != nil {
 		return "", err
 	}
