@@ -17,7 +17,8 @@ func bindStringToFunc(s *string) func(*sql.DB) error {
 		appmodes.Add:    AddMode,
 		appmodes.Done:   DoneMode,
 		appmodes.Help:   HelpMode,
-		appmodes.Jrnl:   Jrnl,
+		appmodes.Jrnl:   JrnlMode,
+		appmodes.Info:   Info,
 		appmodes.List:   ListMode,
 		appmodes.Link:   Link,
 		appmodes.Modify: Modify,
@@ -73,13 +74,12 @@ func App() error {
 }
 
 // Functions below this line are still not implemented.
-
-func Jrnl(_ *sql.DB) error {
-	return nil
-}
 func Modify(_ *sql.DB) error {
 	return nil
 }
 func Link(_ *sql.DB) error {
+	return nil
+}
+func Info(_ *sql.DB) error {
 	return nil
 }
