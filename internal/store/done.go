@@ -20,6 +20,33 @@ func RemoveTask(db *sql.DB, position_id int) error {
 		return err
 	}
 
+	stmt = queries.SelectPageIDsFromTaskIdSQL
+	pageIds, err := db.Query(stmt, task_id)
+	if err != nil {
+		return err
+	}
+	defer pageIds.Close()
+
+	for pageIds.Next() {
+		var pageId int
+		if err := pageIds.Scan(&pageId); err != nil {
+			return err
+		}
+
+		stmt = queries.DeletePageFromPageIdSQL
+		_, err = db.Exec(stmt, pageId)
+		if err != nil {
+			return nil
+		}
+
+	}
+
+	stmt = queries.DeleteJrnlsFromTaskIdSQL
+	_, err = db.Exec(stmt, task_id)
+	if err != nil {
+		return err
+	}
+
 	stmt = queries.DeleteTaskGivenTaskIdSQL
 	_, err = db.Exec(stmt, task_id)
 	if err != nil {

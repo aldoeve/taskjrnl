@@ -16,6 +16,19 @@ const (
 			task_id INTEGER NOT NULL,
 			position INTEGER NOT NULL,
 			FOREIGN KEY (task_id) REFERENCES Tasks(id)
-		)
+		);
+
+		CREATE TABLE IF NOT EXISTS Pages (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			note TEXT NOT NULL
+		);
+
+		CREATE TABLE IF NOT EXISTS Jrnls (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			task_id INTEGER NOT NULL,
+			page_id INTEGER NOT NULL,
+			FOREIGN KEY (task_id) REFERENCES Tasks(id),
+			FOREIGN KEY (page_id) REFERENCES Pages(id)
+		);
 	`
 )
