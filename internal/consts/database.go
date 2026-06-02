@@ -2,7 +2,7 @@
 package consts
 
 const (
-	DBLocation   = "TJ.db"
+	DBName       = "TJ.db"
 	DatabaseType = "sqlite"
 	TestDBName   = "++TEST++.db"
 )

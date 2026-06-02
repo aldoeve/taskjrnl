@@ -3,10 +3,12 @@ package app
 import (
 	"database/sql"
 	"flag"
+	"path/filepath"
 	appmodes "taskjrnl/internal/appModes"
 	"taskjrnl/internal/consts"
 	"taskjrnl/internal/store"
 	taskjrnlErrors "taskjrnl/internal/taskjrnlErrors"
+	"taskjrnl/pkg/util"
 )
 
 // Returns the function that matches the string.
@@ -54,7 +56,14 @@ func App() error {
 
 	mode := bindStringToFunc(&requestedMode)
 
-	db, err := store.DBconnection(consts.DBLocation)
+	appDir, err := util.CreateAppDir(consts.AppName)
+	if err != nil {
+		return err
+	}
+
+	dbLocation := filepath.Join(appDir, consts.DBName)
+
+	db, err := store.DBconnection(dbLocation)
 	if err != nil {
 		return err
 	}
