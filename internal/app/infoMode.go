@@ -3,13 +3,13 @@ package app
 import (
 	"database/sql"
 	"strconv"
-	store "taskjrnl/internal/store"
+	"taskjrnl/internal/store"
 	"taskjrnl/internal/taskjrnlErrors"
 	"taskjrnl/pkg/util"
 )
 
-func JrnlMode(db *sql.DB) error {
-	const expectedNumArgs = 2
+func InfoMode(db *sql.DB) error {
+	const expectedNumArgs = 1
 
 	userInput := util.ArgsAfterKeyword()
 	numArgs := len(userInput)
@@ -18,16 +18,20 @@ func JrnlMode(db *sql.DB) error {
 		return taskjrnlErrors.ErrUsage
 	}
 
-	taskToAddNoteID, err := strconv.Atoi(userInput[0])
+	infoRequestedForTask, err := strconv.Atoi(userInput[0])
 	if err != nil {
 		return err
 	}
-	err = store.AddNoteToTask(db, taskToAddNoteID, userInput[1])
-	if err == sql.ErrNoRows {
-		err = util.InformTasksDoesNotExist()
-	}
+
+	task, err := store.FetchTaskinfo(db, infoRequestedForTask)
 	if err != nil {
 		return err
 	}
+
+	_, err = store.FetchTaskNotes(db, task.Id)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

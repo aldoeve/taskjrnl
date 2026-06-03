@@ -18,7 +18,7 @@ func bindStringToFunc(s *string) func(*sql.DB) error {
 		appmodes.Done:   DoneMode,
 		appmodes.Help:   HelpMode,
 		appmodes.Jrnl:   JrnlMode,
-		appmodes.Info:   Info,
+		appmodes.Info:   InfoMode,
 		appmodes.List:   ListMode,
 		appmodes.Link:   Link,
 		appmodes.Modify: Modify,
@@ -78,8 +78,5 @@ func Modify(_ *sql.DB) error {
 	return nil
 }
 func Link(_ *sql.DB) error {
-	return nil
-}
-func Info(_ *sql.DB) error {
 	return nil
 }

@@ -6,4 +6,7 @@ type Pages struct {
 
 	// Not null text/note.
 	Note string
+
+	// Date created.
+	DateCreated string
 }

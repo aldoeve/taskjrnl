@@ -29,4 +29,9 @@ const (
 		DELETE FROM Tasks
 		WHERE id = ?;
 	`
+	SelectTaskInfoGivenTaskIdSQL = `
+		SELECT name, tag, date_created, priority, importance_variance
+		FROM Tasks
+		Where id = ?;
+	`
 )

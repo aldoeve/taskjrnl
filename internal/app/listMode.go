@@ -7,6 +7,8 @@ import (
 	"taskjrnl/internal/consts"
 	"taskjrnl/internal/schema"
 	store "taskjrnl/internal/store"
+	"taskjrnl/internal/taskjrnlErrors"
+	"taskjrnl/pkg/util"
 
 	"charm.land/lipgloss/v2"
 	"charm.land/lipgloss/v2/table"
@@ -62,6 +64,15 @@ func drawTasks(tasks []schema.Tasks) error {
 
 // Draws the tasks to the command line in order of most important first.
 func ListMode(db *sql.DB) error {
+	const expectedNumArgs = 0
+
+	userInput := util.ArgsAfterKeyword()
+	numArgs := len(userInput)
+
+	if numArgs != expectedNumArgs {
+		return taskjrnlErrors.ErrUsage
+	}
+
 	tasks, err := store.FetchAllTasks(db)
 	if err != nil {
 		return err

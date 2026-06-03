@@ -139,10 +139,12 @@ func addTaskWithOptionalArgs(db *sql.DB, taskName string, optionalArgs []string)
 
 // Add logic to the application. Adds a task.
 func AddMode(db *sql.DB) error {
+	const minNumArgs = 1
+
 	userInput := util.ArgsAfterKeyword()
 	numArgs := len(userInput)
 
-	if numArgs < 1 {
+	if numArgs < minNumArgs {
 		return taskjrnlErrors.ErrTooFewArgs
 	}
 

@@ -5,10 +5,10 @@ import (
 	"taskjrnl/internal/store/queries"
 )
 
-func AddNoteToTask(db *sql.DB, position_id int, note string) error {
+func AddNoteToTask(db *sql.DB, positionId int, note string) error {
 	stmt := queries.SelectTaskIdGivenPositionSQL
-	var task_id int
-	err := db.QueryRow(stmt, position_id).Scan(&task_id)
+	var taskId int
+	err := db.QueryRow(stmt, positionId).Scan(&taskId)
 	if err != nil {
 		return err
 	}
@@ -25,7 +25,7 @@ func AddNoteToTask(db *sql.DB, position_id int, note string) error {
 	}
 
 	stmt = queries.CreateJrnlSQL
-	_, err = db.Exec(stmt, task_id, page_id)
+	_, err = db.Exec(stmt, taskId, page_id)
 	if err != nil {
 		return err
 	}
