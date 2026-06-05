@@ -2,7 +2,6 @@ package app
 
 import (
 	"database/sql"
-	"fmt"
 	"strconv"
 	"taskjrnl/internal/consts"
 	"taskjrnl/internal/schema"
@@ -92,8 +91,6 @@ func InfoMode(db *sql.DB) error {
 	if err != nil {
 		return err
 	}
-
-	fmt.Println(len(notes))
 
 	err = renderInfo(task, notes)
 	if err != nil {
