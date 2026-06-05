@@ -20,13 +20,18 @@ const (
 	`
 	SelectTaskIdGivenPositionSQL = `
 		SELECT T.id
-		FROM Tasks T
-		RIGHT JOIN Positions P
+		FROM Tasks AS T
+		RIGHT JOIN Positions AS P
 		ON T.id = P.task_id
 		WHERE P.Position = ?;
 	`
 	DeleteTaskGivenTaskIdSQL = `
 		DELETE FROM Tasks
 		WHERE id = ?;
+	`
+	SelectTaskInfoGivenTaskIdSQL = `
+		SELECT name, tag, date_created, priority, importance_variance
+		FROM Tasks
+		Where id = ?;
 	`
 )

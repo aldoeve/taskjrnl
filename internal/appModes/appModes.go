@@ -8,5 +8,6 @@ const (
 	Add    = "add"
 	Done   = "done"
 	Jrnl   = "jrnl"
+	Info   = "info"
 	Modify = "modify"
 )
