@@ -10,7 +10,6 @@ const (
 		DELETE FROM Jrnls
 		WHERE task_id = ?;
 	`
-
 	CreateJrnlSQL = `
 		INSERT INTO Jrnls (task_id, page_id) VALUES (?,?);
 	`

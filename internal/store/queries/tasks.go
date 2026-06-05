@@ -20,8 +20,8 @@ const (
 	`
 	SelectTaskIdGivenPositionSQL = `
 		SELECT T.id
-		FROM Tasks T
-		RIGHT JOIN Positions P
+		FROM Tasks AS T
+		RIGHT JOIN Positions AS P
 		ON T.id = P.task_id
 		WHERE P.Position = ?;
 	`
