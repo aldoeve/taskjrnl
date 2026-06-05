@@ -1,11 +1,10 @@
+BIN_DIR := $(shell go env GOPATH)/bin
+
 run:
 	go run ./cmd/taskjrnl/ add "Hello"
 
 help:
 	go run ./cmd/taskjrnl/ help
-
-what:
-	@echo "run, help, test, verbose, coverage, clean"
 
 test:
 	go test ./...
@@ -18,8 +17,13 @@ coverage:
 	go tool cover -html=coverage.out -o coverage.html
 	xdg-open coverage.html
 
+install:
+	go install ./cmd/taskjrnl/
+
+symlink:
+	ln -sf $(BIN_DIR)/taskjrnl $(BIN_DIR)/task
+
 clean:
-	rm -f TJ.db
 	rm -f coverage.out
 	rm -f coverage.html
 	
