@@ -26,10 +26,10 @@ func formatTaskNotes(notes []schema.Pages) string {
 		)
 
 		if index%2 == 0 {
-			date = consts.InfoEvenRowStyle.Render(value.DateCreated)
+			date = consts.InfoDateEvenRowStyle.Render(value.DateCreated)
 			text = consts.InfoEvenRowStyle.Render(value.Note)
 		} else {
-			date = consts.InfoOddRowStyle.Render(value.DateCreated)
+			date = consts.InfoDateOddRowStyle.Render(value.DateCreated)
 			text = consts.InfoOddRowStyle.Render(value.Note)
 		}
 		row := lipgloss.JoinHorizontal(lipgloss.Left, date, " -- ", text)
@@ -41,8 +41,8 @@ func formatTaskNotes(notes []schema.Pages) string {
 
 // Formats and styles task info.
 func formatTaskData(task schema.Tasks) string {
-	date := consts.TaskDate.Render(task.DateCreated)
-	name := consts.TaskName.Render(task.Name)
+	date := consts.TaskDateStyle.Render(task.DateCreated)
+	name := consts.TaskNameStyle.Render(task.Name)
 	out := lipgloss.JoinHorizontal(lipgloss.Left, date, " ", name)
 	return out
 }
