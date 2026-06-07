@@ -6,7 +6,7 @@ import (
 	schema "taskjrnl/internal/schema"
 	"taskjrnl/internal/store/queries"
 	taskjrnlErrors "taskjrnl/internal/taskjrnlErrors"
-	util "taskjrnl/pkg/util"
+	"taskjrnl/pkg/util"
 
 	_ "modernc.org/sqlite"
 )

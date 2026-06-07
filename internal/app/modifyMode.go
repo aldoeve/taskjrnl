@@ -1,4 +1,3 @@
-// Pacage app contains the core application logic.
 package app
 
 import (
@@ -8,9 +7,10 @@ import (
 	util "taskjrnl/pkg/util"
 )
 
-// Add logic to the application. Adds a task.
-func AddMode(db *sql.DB) error {
-	const minNumArgs = 1
+func ModifyMode(db *sql.DB) error {
+	const (
+		minNumArgs = 2
+	)
 
 	userInput := util.ArgsAfterKeyword()
 	numArgs := len(userInput)
