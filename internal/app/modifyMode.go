@@ -2,11 +2,13 @@ package app
 
 import (
 	"database/sql"
+	"strconv"
 	store "taskjrnl/internal/store"
 	taskjrnlErrors "taskjrnl/internal/taskjrnlErrors"
 	util "taskjrnl/pkg/util"
 )
 
+// App logic to modify a task's values
 func ModifyMode(db *sql.DB) error {
 	const (
 		minNumArgs = 2
@@ -19,16 +21,22 @@ func ModifyMode(db *sql.DB) error {
 		return taskjrnlErrors.ErrTooFewArgs
 	}
 
-	var err error
+	taskIdToModify, err := strconv.Atoi(userInput[0])
+	if err != nil {
+		return taskjrnlErrors.ErrUsage
+	}
+
+	propertiesToModify := userInput[1:]
+	numArgs = len(propertiesToModify)
 
 	if numArgs == 1 {
-		err = store.CreateTask(db, userInput[0], nil, nil)
+		err = store.ModifyTask(db, taskIdToModify, propertiesToModify[0], nil, nil)
 	} else {
-		task, err := util.ParseTaskWithOptionalArgs(db, userInput[0], userInput[1:])
+		task, err := util.ParseTaskWithOptionalArgs(db, propertiesToModify[0], propertiesToModify[1:])
 		if err != nil {
 			return err
 		}
-		err = store.CreateTask(db, task.Name, task.Tag, task.Priority)
+		err = store.ModifyTask(db, taskIdToModify, task.Name, task.Tag, task.Priority)
 	}
 
 	return err

@@ -1,0 +1,42 @@
+package store
+
+import (
+	"database/sql"
+	"taskjrnl/internal/consts"
+	"taskjrnl/internal/schema"
+	"taskjrnl/internal/store/queries"
+)
+
+// Updates the required task in the database.
+func updateTask(db *sql.DB, task schema.Tasks) error {
+	const stmt = queries.UpdateTaskAllColumnsSQL
+
+	_, err := db.Exec(stmt, task.Name, task.Tag, task.Priority, task.Id)
+	if err != nil {
+		return err
+	}
+
+	if task.Priority != nil {
+		err = RearangePositions(db)
+	}
+
+	return err
+}
+
+// Organized information to prepare to update task.
+func ModifyTask(db *sql.DB, taskId int, name string, tag *string, priority *string) error {
+	finalPriority := consts.LowPriority
+
+	if priority != nil {
+		finalPriority = *priority
+	}
+
+	task := schema.Tasks{
+		Id:       taskId,
+		Name:     name,
+		Tag:      tag,
+		Priority: &finalPriority,
+	}
+
+	return updateTask(db, task)
+}
