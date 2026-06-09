@@ -22,6 +22,7 @@ func bindStringToFunc(s *string) func(*sql.DB) error {
 		appmodes.List:   ListMode,
 		appmodes.Link:   Link,
 		appmodes.Modify: ModifyMode,
+		appmodes.Weight: WeightMode,
 	}
 	if requestedFunc, found := modeHandlers[*s]; found {
 		return requestedFunc
