@@ -9,15 +9,18 @@ import (
 	taskjrnlErrors "taskjrnl/internal/taskjrnlErrors"
 )
 
+// Returns error if there is no arguments passed.
 func checkForMinArgs() error {
 	const MinCountArgs = 1
-	numOfArgs := uint(len(os.Args[1:]))
-	if numOfArgs < MinCountArgs {
+
+	if numOfArgs := uint(len(os.Args[1:])); numOfArgs < MinCountArgs {
 		return taskjrnlErrors.ErrTooFewArgs
 	}
+
 	return nil
 }
 
+// App entry point.
 func main() {
 
 	if err := checkForMinArgs(); err != nil {
