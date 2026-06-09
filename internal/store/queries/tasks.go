@@ -43,4 +43,10 @@ const (
 			importance_variance = importance_variance
 		WHERE id = ?;
 	`
+	UpdateTaskWeightSQL = `
+		UPDATE Tasks
+		SET
+			importance_variance = importance_variance + ?
+		WHERE id = ?;
+	`
 )

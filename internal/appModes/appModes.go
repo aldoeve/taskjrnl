@@ -10,4 +10,5 @@ const (
 	Jrnl   = "jrnl"
 	Info   = "info"
 	Modify = "modify"
+	Weight = "weight"
 )
