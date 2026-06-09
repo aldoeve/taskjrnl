@@ -39,5 +39,9 @@ func ModifyMode(db *sql.DB) error {
 		err = store.ModifyTask(db, taskIdToModify, task.Name, task.Tag, task.Priority)
 	}
 
+	if err == sql.ErrNoRows {
+		err = util.InformTasksDoesNotExist()
+	}
+
 	return err
 }

@@ -39,7 +39,8 @@ const (
 		SET 
 			name = ?,
 			tag  = ?,
-			priority = ?
+			priority = ?,
+			importance_variance = importance_variance
 		WHERE id = ?;
 	`
 )

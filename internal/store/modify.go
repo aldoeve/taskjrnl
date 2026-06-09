@@ -24,11 +24,18 @@ func updateTask(db *sql.DB, task schema.Tasks) error {
 }
 
 // Organized information to prepare to update task.
-func ModifyTask(db *sql.DB, taskId int, name string, tag *string, priority *string) error {
+func ModifyTask(db *sql.DB, userViewTaskId int, name string, tag *string, priority *string) error {
 	finalPriority := consts.LowPriority
 
 	if priority != nil {
 		finalPriority = *priority
+	}
+
+	stmt := queries.SelectTaskIdGivenPositionSQL
+	var taskId int
+	err := db.QueryRow(stmt, userViewTaskId).Scan(&taskId)
+	if err != nil {
+		return err
 	}
 
 	task := schema.Tasks{
