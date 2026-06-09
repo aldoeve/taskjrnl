@@ -34,4 +34,13 @@ const (
 		FROM Tasks
 		Where id = ?;
 	`
+	UpdateTaskAllColumnsSQL = `
+		UPDATE Tasks
+		SET 
+			name = ?,
+			tag  = ?,
+			priority = ?,
+			importance_variance = importance_variance
+		WHERE id = ?;
+	`
 )

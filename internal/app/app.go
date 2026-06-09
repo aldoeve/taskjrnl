@@ -21,7 +21,7 @@ func bindStringToFunc(s *string) func(*sql.DB) error {
 		appmodes.Info:   InfoMode,
 		appmodes.List:   ListMode,
 		appmodes.Link:   Link,
-		appmodes.Modify: Modify,
+		appmodes.Modify: ModifyMode,
 	}
 	if requestedFunc, found := modeHandlers[*s]; found {
 		return requestedFunc
@@ -74,9 +74,6 @@ func App() error {
 }
 
 // Functions below this line are still not implemented.
-func Modify(_ *sql.DB) error {
-	return nil
-}
 func Link(_ *sql.DB) error {
 	return nil
 }
