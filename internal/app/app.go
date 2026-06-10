@@ -13,7 +13,7 @@ import (
 
 // Returns the function that matches the string.
 func bindStringToFunc(s *string) func(*sql.DB) error {
-	modeHandlers := map[string]func(*sql.DB) error{
+	strToAppModes := map[string]func(*sql.DB) error{
 		appmodes.Add:    AddMode,
 		appmodes.Done:   DoneMode,
 		appmodes.Help:   HelpMode,
@@ -24,9 +24,11 @@ func bindStringToFunc(s *string) func(*sql.DB) error {
 		appmodes.Modify: ModifyMode,
 		appmodes.Weight: WeightMode,
 	}
-	if requestedFunc, found := modeHandlers[*s]; found {
+
+	if requestedFunc, ok := strToAppModes[*s]; ok {
 		return requestedFunc
 	}
+
 	return NoCorrespondingMode
 }
 
@@ -37,12 +39,10 @@ func App() error {
 
 	flag.Parse()
 
-	positonalArgs := flag.Args()
-	numOfArgsLeft := len(positonalArgs)
-
 	var requestedMode string
+	positonalArgs := flag.Args()
 
-	if numOfArgsLeft > 0 {
+	if len(positonalArgs) > 0 {
 		requestedMode = positonalArgs[0]
 	}
 
