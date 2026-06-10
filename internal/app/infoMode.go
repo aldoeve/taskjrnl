@@ -43,8 +43,14 @@ func formatTaskNotes(notes []schema.Pages) string {
 func formatTaskData(task schema.Tasks) string {
 	date := consts.TaskDateStyle.Render(task.DateCreated)
 	name := consts.TaskNameStyle.Render(task.Name)
-	out := lipgloss.JoinHorizontal(lipgloss.Left, date, " ", name)
-	return out
+	header := lipgloss.JoinHorizontal(lipgloss.Left, date, name)
+
+	addtionalTaskInfo := consts.TaskDateStyle.Render(lipgloss.JoinHorizontal(lipgloss.Left, " ",
+		"Priority: ", *task.Priority, " ",
+		"Weight: ", strconv.Itoa(task.ImportanceVariance),
+	))
+
+	return lipgloss.JoinVertical(lipgloss.Left, header, "\n", addtionalTaskInfo)
 }
 
 // Stiches all information together for output.
@@ -54,7 +60,7 @@ func renderInfo(task schema.Tasks, notes []schema.Pages) error {
 
 	out := taskOutput
 	if notesOutput != "" {
-		out = lipgloss.JoinVertical(lipgloss.Left, out, "\n", notesOutput)
+		out = lipgloss.JoinVertical(lipgloss.Left, out, notesOutput)
 	}
 
 	out = consts.InfoBorder.Render(out)
@@ -65,24 +71,24 @@ func renderInfo(task schema.Tasks, notes []schema.Pages) error {
 
 // Sanitizes the input and attempts to render desired task info.
 func InfoMode(db *sql.DB) error {
-	const expectedNumArgs = 1
-
+	const (
+		expectedNumArgs     = 1
+		userTaskPositionLoc = 0
+	)
 	userInput := util.ArgsAfterKeyword()
-	numArgs := len(userInput)
 
-	if numArgs != expectedNumArgs {
+	if numArgs := len(userInput); numArgs != expectedNumArgs {
 		return taskjrnlErrors.ErrUsage
 	}
 
-	infoRequestedForTask, err := strconv.Atoi(userInput[0])
+	userTaskPosition, err := strconv.Atoi(userInput[userTaskPositionLoc])
 	if err != nil {
 		return err
 	}
 
-	task, err := store.FetchTaskinfo(db, infoRequestedForTask)
+	task, err := store.FetchTaskinfo(db, userTaskPosition)
 	if err == sql.ErrNoRows {
-		util.InformTasksDoesNotExist()
-		return nil
+		return util.InformTasksDoesNotExist()
 	} else if err != nil {
 		return err
 	}
@@ -92,10 +98,5 @@ func InfoMode(db *sql.DB) error {
 		return err
 	}
 
-	err = renderInfo(task, notes)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return renderInfo(task, notes)
 }
