@@ -39,14 +39,10 @@ func generateTable() *table.Table {
 func drawTasks(tasks []schema.Tasks) error {
 	t := generateTable()
 
-	var position int
-	for _, task := range tasks {
-		position++
+	for i, task := range tasks {
+		var priority, tag string
 
-		var (
-			priority string
-			tag      string
-		)
+		position := i + 1
 
 		if task.Priority != nil {
 			priority = *task.Priority
@@ -67,9 +63,8 @@ func ListMode(db *sql.DB) error {
 	const expectedNumArgs = 0
 
 	userInput := util.ArgsAfterKeyword()
-	numArgs := len(userInput)
 
-	if numArgs != expectedNumArgs {
+	if numArgs := len(userInput); numArgs != expectedNumArgs {
 		return taskjrnlErrors.ErrUsage
 	}
 
@@ -78,6 +73,5 @@ func ListMode(db *sql.DB) error {
 		return err
 	}
 
-	err = drawTasks(tasks)
-	return err
+	return drawTasks(tasks)
 }

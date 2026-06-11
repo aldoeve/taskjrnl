@@ -20,10 +20,7 @@ func formatTaskNotes(notes []schema.Pages) string {
 
 	var out string
 	for index, value := range notes {
-		var (
-			date string
-			text string
-		)
+		var date, text string
 
 		if index%2 == 0 {
 			date = consts.InfoDateEvenRowStyle.Render(value.DateCreated)
