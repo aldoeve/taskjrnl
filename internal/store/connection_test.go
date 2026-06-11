@@ -29,7 +29,7 @@ func Test_establishConnToOldDB(t *testing.T) {
 	assert.Nil(t, err)
 
 	query := `
-		INSERT INTO Tasks (name, tag, priority, importance_variance)
+		INSERT INTO Tasks (name, tag, priority, weight)
 		VALUES ('TEST_OLD_DB', 'x', 'L', 5);
 	`
 	_, err = db.Exec(query)
