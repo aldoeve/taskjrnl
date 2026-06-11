@@ -8,26 +8,28 @@ import (
 	"taskjrnl/pkg/util"
 )
 
+// App logic to add a note to a task.
 func JrnlMode(db *sql.DB) error {
-	const expectedNumArgs = 2
+	const (
+		expectedNumArgs     = 2
+		userTaskPositionLoc = 0
+	)
 
 	userInput := util.ArgsAfterKeyword()
-	numArgs := len(userInput)
 
-	if numArgs != expectedNumArgs {
+	if numArgs := len(userInput); numArgs != expectedNumArgs {
 		return taskjrnlErrors.ErrUsage
 	}
 
-	taskToAddNoteID, err := strconv.Atoi(userInput[0])
+	userTaskPosition, err := strconv.Atoi(userInput[userTaskPositionLoc])
 	if err != nil {
 		return err
 	}
-	err = store.AddNoteToTask(db, taskToAddNoteID, userInput[1])
+
+	err = store.AddNoteToTask(db, userTaskPosition, userInput[1])
 	if err == sql.ErrNoRows {
-		err = util.InformTasksDoesNotExist()
+		return util.InformTasksDoesNotExist()
 	}
-	if err != nil {
-		return err
-	}
-	return nil
+
+	return err
 }
