@@ -54,7 +54,7 @@ func RearangePositions(db *sql.DB) error {
 			&taskInfo.Id,
 			&taskInfo.DateCreated,
 			&taskInfo.Priority,
-			&taskInfo.ImportanceVariance,
+			&taskInfo.Weight,
 		); err != nil {
 			return err
 		}

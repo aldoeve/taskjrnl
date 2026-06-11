@@ -44,7 +44,7 @@ func formatTaskData(task schema.Tasks) string {
 
 	addtionalTaskInfo := consts.TaskDateStyle.Render(lipgloss.JoinHorizontal(lipgloss.Left, " ",
 		"Priority: ", *task.Priority, " ",
-		"Weight: ", strconv.Itoa(task.ImportanceVariance),
+		"Weight: ", strconv.Itoa(task.Weight),
 	))
 
 	return lipgloss.JoinVertical(lipgloss.Left, header, "\n", addtionalTaskInfo)

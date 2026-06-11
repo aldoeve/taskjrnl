@@ -35,7 +35,7 @@ func CalculateImportance(task *schema.Tasks) int {
 		daysSinceCreation = int(time.Since(storedTime).Hours() / 24)
 	}
 
-	finalCalculation := priority + daysSinceCreation + task.ImportanceVariance
+	finalCalculation := priority + daysSinceCreation + task.Weight
 
 	return finalCalculation
 }
