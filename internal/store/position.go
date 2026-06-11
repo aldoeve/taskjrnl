@@ -15,11 +15,9 @@ import (
 func clearPositionsTable(db *sql.DB) error {
 	const stmt = queries.DeletePositionsRowsSQL
 
-	if _, err := db.Exec(stmt); err != nil {
-		return err
-	}
+	_, err := db.Exec(stmt)
 
-	return nil
+	return err
 }
 
 // Inserts task_id and its corresponding position into the Positions table.
@@ -27,11 +25,8 @@ func insertTaskIntoPosition(db *sql.DB, positionItem schema.Positions) error {
 	const stmt = queries.InsertSinglePositionRowSQL
 
 	_, err := db.Exec(stmt, positionItem.TaskId, positionItem.Position)
-	if err != nil {
-		return err
-	}
 
-	return nil
+	return err
 }
 
 // Fixes the Positions table's ordering.

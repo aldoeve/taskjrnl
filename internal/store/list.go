@@ -33,5 +33,6 @@ func FetchAllTasks(db *sql.DB) ([]schema.Tasks, error) {
 
 		tasks = append(tasks, task)
 	}
+
 	return tasks, nil
 }

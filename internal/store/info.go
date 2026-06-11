@@ -45,10 +45,5 @@ func FetchTaskinfo(db *sql.DB, postionalId int) (schema.Tasks, error) {
 		&task.ImportanceVariance,
 	)
 
-	if err != nil {
-		return task, err
-	}
-
-	return task, nil
-
+	return task, err
 }

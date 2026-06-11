@@ -17,7 +17,7 @@ func updateTask(db *sql.DB, task schema.Tasks) error {
 	}
 
 	if task.Priority != nil {
-		err = RearangePositions(db)
+		return RearangePositions(db)
 	}
 
 	return err
