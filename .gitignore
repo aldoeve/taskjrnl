@@ -36,3 +36,6 @@ go.work.sum
 
 # Bianary
 taskjrnl
+
+# ASM files
+asm*

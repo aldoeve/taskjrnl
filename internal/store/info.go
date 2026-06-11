@@ -42,13 +42,8 @@ func FetchTaskinfo(db *sql.DB, postionalId int) (schema.Tasks, error) {
 	err = db.QueryRow(stmt, task.Id).Scan(
 		&task.Name, &task.Tag,
 		&task.DateCreated, &task.Priority,
-		&task.ImportanceVariance,
+		&task.Weight,
 	)
 
-	if err != nil {
-		return task, err
-	}
-
-	return task, nil
-
+	return task, err
 }

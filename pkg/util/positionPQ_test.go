@@ -15,8 +15,8 @@ func Test_pq_insertionNdeletion(t *testing.T) {
 
 	priority := "L"
 
-	firstTask := schema.Tasks{Id: 45, ImportanceVariance: 10, Priority: &priority}
-	secondTask := schema.Tasks{Id: 17, ImportanceVariance: 20, Priority: &priority}
+	firstTask := schema.Tasks{Id: 45, Weight: 10, Priority: &priority}
+	secondTask := schema.Tasks{Id: 17, Weight: 20, Priority: &priority}
 
 	assert.Equal(t, 0, pq.Len())
 	heap.Push(pq, &firstTask)
@@ -38,8 +38,8 @@ func Test_pq_bubbleup(t *testing.T) {
 
 	priority := "L"
 
-	firstTask := schema.Tasks{Id: 45, ImportanceVariance: 20, Priority: &priority}
-	secondTask := schema.Tasks{Id: 17, ImportanceVariance: 10, Priority: &priority}
+	firstTask := schema.Tasks{Id: 45, Weight: 20, Priority: &priority}
+	secondTask := schema.Tasks{Id: 17, Weight: 10, Priority: &priority}
 
 	heap.Push(pq, &firstTask)
 	heap.Push(pq, &secondTask)

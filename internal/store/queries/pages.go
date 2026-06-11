@@ -6,10 +6,13 @@ const (
 		WHERE id = ?;
 	`
 	CreatePageSQL = `
-		INSERT INTO Pages (note) VALUES (?);
+		INSERT INTO Pages (note) 
+		VALUES (?);
 	`
 	FetchJrnlPagesFromTaskIdSQL = `
-		SELECT P.note, P.date_created
+		SELECT 
+			P.note, 
+			P.date_created
 		FROM Pages AS P
 		INNER JOIN Jrnls AS J
 			ON J.page_id = P.id

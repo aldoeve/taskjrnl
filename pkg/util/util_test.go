@@ -53,12 +53,12 @@ func Test_CalculateImportance_default(t *testing.T) {
 	priority := "L"
 
 	task := schema.Tasks{
-		Id:                 0,
-		Name:               consts.AppName,
-		Tag:                nil,
-		DateCreated:        currentTime.String(),
-		Priority:           &priority,
-		ImportanceVariance: 0,
+		Id:          0,
+		Name:        consts.AppName,
+		Tag:         nil,
+		DateCreated: currentTime.String(),
+		Priority:    &priority,
+		Weight:      0,
 	}
 
 	value := util.CalculateImportance(&task)
@@ -71,12 +71,12 @@ func Test_CalculateImportance_24HrsPassed(t *testing.T) {
 	priority := "L"
 
 	task := schema.Tasks{
-		Id:                 0,
-		Name:               consts.AppName,
-		Tag:                nil,
-		DateCreated:        fiveHoursAgo.Format(config.TimeFormat),
-		Priority:           &priority,
-		ImportanceVariance: 0,
+		Id:          0,
+		Name:        consts.AppName,
+		Tag:         nil,
+		DateCreated: fiveHoursAgo.Format(config.TimeFormat),
+		Priority:    &priority,
+		Weight:      0,
 	}
 
 	value := util.CalculateImportance(&task)
@@ -89,12 +89,12 @@ func Test_CalculateImportance_differentPriorites(t *testing.T) {
 	priority := "L"
 
 	task := schema.Tasks{
-		Id:                 0,
-		Name:               consts.AppName,
-		Tag:                nil,
-		DateCreated:        currentTime.Format(config.TimeFormat),
-		Priority:           &priority,
-		ImportanceVariance: 0,
+		Id:          0,
+		Name:        consts.AppName,
+		Tag:         nil,
+		DateCreated: currentTime.Format(config.TimeFormat),
+		Priority:    &priority,
+		Weight:      0,
 	}
 
 	value := util.CalculateImportance(&task)
@@ -119,12 +119,12 @@ func Test_CalculateImportance_variance(t *testing.T) {
 	priority := "L"
 
 	task := schema.Tasks{
-		Id:                 0,
-		Name:               consts.AppName,
-		Tag:                nil,
-		DateCreated:        currentTime.Format(config.TimeFormat),
-		Priority:           &priority,
-		ImportanceVariance: 3234989234,
+		Id:          0,
+		Name:        consts.AppName,
+		Tag:         nil,
+		DateCreated: currentTime.Format(config.TimeFormat),
+		Priority:    &priority,
+		Weight:      3234989234,
 	}
 
 	value := util.CalculateImportance(&task)
@@ -137,12 +137,12 @@ func Test_CalculateImportance_everything(t *testing.T) {
 	priority := "M"
 
 	task := schema.Tasks{
-		Id:                 0,
-		Name:               consts.AppName,
-		Tag:                nil,
-		DateCreated:        threeDaysAgo.Format(config.TimeFormat),
-		Priority:           &priority,
-		ImportanceVariance: 21,
+		Id:          0,
+		Name:        consts.AppName,
+		Tag:         nil,
+		DateCreated: threeDaysAgo.Format(config.TimeFormat),
+		Priority:    &priority,
+		Weight:      21,
 	}
 
 	value := util.CalculateImportance(&task)

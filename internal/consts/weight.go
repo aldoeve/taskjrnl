@@ -1,5 +1,5 @@
 package consts
 
 const (
-	DefaultVairance = 0
+	DefaultWeight = 0
 )

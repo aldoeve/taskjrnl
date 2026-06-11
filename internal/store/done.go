@@ -6,10 +6,10 @@ import (
 )
 
 // Removes a task and its refrences.
-func RemoveTask(db *sql.DB, position_id int) error {
+func RemoveTask(db *sql.DB, positionId int) error {
 	stmt := queries.SelectTaskIdGivenPositionSQL
 	var taskId int
-	err := db.QueryRow(stmt, position_id).Scan(&taskId)
+	err := db.QueryRow(stmt, positionId).Scan(&taskId)
 	if err != nil {
 		return err
 	}
@@ -53,7 +53,5 @@ func RemoveTask(db *sql.DB, position_id int) error {
 		return err
 	}
 
-	RearangePositions(db)
-
-	return nil
+	return RearangePositions(db)
 }

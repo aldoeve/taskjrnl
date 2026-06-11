@@ -12,4 +12,9 @@ const (
 		DELETE FROM Positions
 		Where task_id = ?;
 	`
+	SelectTaskIdGivenPositionSQL = `
+		SELECT task_id
+		FROM Positions
+		WHERE position = ?;
+	`
 )

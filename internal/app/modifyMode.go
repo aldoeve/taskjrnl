@@ -11,36 +11,38 @@ import (
 // App logic to modify a task's values
 func ModifyMode(db *sql.DB) error {
 	const (
-		minNumArgs = 2
+		minNumArgs            = 2
+		userTaskPositionLoc   = 0
+		userTaskArgsLocStart  = 1
+		simpleNameEditRequest = 1
 	)
 
 	userInput := util.ArgsAfterKeyword()
-	numArgs := len(userInput)
 
-	if numArgs < minNumArgs {
-		return taskjrnlErrors.ErrTooFewArgs
+	if numArgs := len(userInput); numArgs < minNumArgs {
+		return taskjrnlErrors.ErrUsage
 	}
 
-	taskIdToModify, err := strconv.Atoi(userInput[0])
+	userTaskPosition, err := strconv.Atoi(userInput[userTaskPositionLoc])
 	if err != nil {
 		return taskjrnlErrors.ErrUsage
 	}
 
-	propertiesToModify := userInput[1:]
-	numArgs = len(propertiesToModify)
+	propertiesToModify := userInput[userTaskArgsLocStart:]
 
-	if numArgs == 1 {
-		err = store.ModifyTask(db, taskIdToModify, propertiesToModify[0], nil, nil)
+	if numArgs := len(propertiesToModify); numArgs == simpleNameEditRequest {
+		err = store.ModifyTask(db, userTaskPosition, propertiesToModify[userTaskPositionLoc], nil, nil)
 	} else {
-		task, err := util.ParseTaskWithOptionalArgs(db, propertiesToModify[0], propertiesToModify[1:])
+		task, err := util.ParseTaskWithOptionalArgs(db, propertiesToModify[userTaskPositionLoc], propertiesToModify[userTaskArgsLocStart:])
 		if err != nil {
 			return err
 		}
-		err = store.ModifyTask(db, taskIdToModify, task.Name, task.Tag, task.Priority)
+
+		err = store.ModifyTask(db, userTaskPosition, task.Name, task.Tag, task.Priority)
 	}
 
 	if err == sql.ErrNoRows {
-		err = util.InformTasksDoesNotExist()
+		return util.InformTasksDoesNotExist()
 	}
 
 	return err

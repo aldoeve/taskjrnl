@@ -2,35 +2,39 @@ package queries
 
 const (
 	InsertSingleTaskSQL = `
-		INSERT INTO Tasks (name, tag, priority, importance_variance)
+		INSERT INTO Tasks (name, tag, priority, Weight)
 		VALUES(?, ?, ?, ?);
 	`
 	SelectPositionsDataFromTasksSQL = `
 		SELECT 
-		id, date_created, 
-		priority, importance_variance
+			id, 
+			date_created, 
+			priority, 
+			Weight
 		FROM Tasks;
 	`
 	SelectRelavantOrderedListInfoSQL = `
-		SELECT T.name, T.tag, T.date_created, T.priority 
+		SELECT 
+			T.name, 
+			T.tag, 
+			T.date_created, 
+			T.priority 
 		FROM Tasks AS T
 		INNER JOIN Positions AS P
 			ON T.id = P.task_id
 		ORDER BY P.position;
-	`
-	SelectTaskIdGivenPositionSQL = `
-		SELECT T.id
-		FROM Tasks AS T
-		RIGHT JOIN Positions AS P
-		ON T.id = P.task_id
-		WHERE P.Position = ?;
 	`
 	DeleteTaskGivenTaskIdSQL = `
 		DELETE FROM Tasks
 		WHERE id = ?;
 	`
 	SelectTaskInfoGivenTaskIdSQL = `
-		SELECT name, tag, date_created, priority, importance_variance
+		SELECT 
+			name, 
+			tag, 
+			date_created, 
+			priority, 
+			Weight
 		FROM Tasks
 		Where id = ?;
 	`
@@ -40,13 +44,13 @@ const (
 			name = ?,
 			tag  = ?,
 			priority = ?,
-			importance_variance = importance_variance
+			Weight = Weight
 		WHERE id = ?;
 	`
 	UpdateTaskWeightSQL = `
 		UPDATE Tasks
 		SET
-			importance_variance = importance_variance + ?
+			Weight = Weight + ?
 		WHERE id = ?;
 	`
 )

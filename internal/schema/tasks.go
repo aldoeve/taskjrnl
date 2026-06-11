@@ -20,5 +20,5 @@ type Tasks struct {
 	Priority *string
 
 	// Not Null. The importance modifier that can change a tasks importance relative to others.
-	ImportanceVariance int
+	Weight int
 }

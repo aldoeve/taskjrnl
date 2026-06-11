@@ -8,7 +8,7 @@ const (
 			tag TEXT,
 			date_created TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			priority CHAR(1) NOT NULL CHECK(priority IN('L', 'M','H')),
-			importance_variance INTEGER NOT NULL
+			Weight INTEGER NOT NULL
 		);
 	
 		CREATE TABLE IF NOT EXISTS Positions (

@@ -10,7 +10,11 @@ import (
 
 // Add logic to the application. Adds a task.
 func AddMode(db *sql.DB) error {
-	const minNumArgs = 1
+	const (
+		minNumArgs          = 1
+		taskNameLoc         = minNumArgs - 1
+		additionalParamsLoc = minNumArgs
+	)
 
 	userInput := util.ArgsAfterKeyword()
 	numArgs := len(userInput)
@@ -19,17 +23,14 @@ func AddMode(db *sql.DB) error {
 		return taskjrnlErrors.ErrTooFewArgs
 	}
 
-	var err error
-
-	if numArgs == 1 {
-		err = store.CreateTask(db, userInput[0], nil, nil)
-	} else {
-		task, err := util.ParseTaskWithOptionalArgs(db, userInput[0], userInput[1:])
-		if err != nil {
-			return err
-		}
-		err = store.CreateTask(db, task.Name, task.Tag, task.Priority)
+	if numArgs == minNumArgs {
+		return store.CreateTask(db, userInput[taskNameLoc], nil, nil)
 	}
 
-	return err
+	task, err := util.ParseTaskWithOptionalArgs(db, userInput[taskNameLoc], userInput[additionalParamsLoc:])
+	if err != nil {
+		return err
+	}
+
+	return store.CreateTask(db, task.Name, task.Tag, task.Priority)
 }

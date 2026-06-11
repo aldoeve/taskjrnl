@@ -10,27 +10,30 @@ import (
 
 // Deletion/completion logic of the application. Removes a task.
 func DoneMode(db *sql.DB) error {
-	const expectedNumArgs = 1
+	const (
+		expectedNumArgs        = 1
+		userTaskPositionArgLoc = 0
+	)
 
 	userInput := util.ArgsAfterKeyword()
-	numArgs := len(userInput)
 
-	if numArgs != expectedNumArgs {
+	if numArgs := len(userInput); numArgs != expectedNumArgs {
 		return taskjrnlErrors.ErrTooFewArgs
 	}
 
-	userCompletedTaskId, err := strconv.Atoi(userInput[0])
+	userTaskPosition, err := strconv.Atoi(userInput[userTaskPositionArgLoc])
 	if err != nil {
 		return taskjrnlErrors.ErrUsage
 	}
 
-	err = store.RemoveTask(db, userCompletedTaskId)
-	if err == sql.ErrNoRows {
-		err = util.InformTasksDoesNotExist()
-	}
-	if err != nil {
+	err = store.RemoveTask(db, userTaskPosition)
+
+	switch err {
+	case nil:
+		return nil
+	case sql.ErrNoRows:
+		return util.InformTasksDoesNotExist()
+	default:
 		return err
 	}
-
-	return nil
 }

@@ -5,6 +5,7 @@ import (
 	"taskjrnl/internal/store/queries"
 )
 
+// Addes an entry to the page table and jrnl table to save the note.
 func AddNoteToTask(db *sql.DB, positionId int, note string) error {
 	stmt := queries.SelectTaskIdGivenPositionSQL
 	var taskId int
@@ -26,9 +27,6 @@ func AddNoteToTask(db *sql.DB, positionId int, note string) error {
 
 	stmt = queries.CreateJrnlSQL
 	_, err = db.Exec(stmt, taskId, page_id)
-	if err != nil {
-		return err
-	}
 
-	return nil
+	return err
 }

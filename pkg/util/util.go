@@ -35,7 +35,7 @@ func CalculateImportance(task *schema.Tasks) int {
 		daysSinceCreation = int(time.Since(storedTime).Hours() / 24)
 	}
 
-	finalCalculation := priority + daysSinceCreation + task.ImportanceVariance
+	finalCalculation := priority + daysSinceCreation + task.Weight
 
 	return finalCalculation
 }
@@ -49,9 +49,6 @@ func CreateAppDir(applicationName string) (string, error) {
 
 	appDir := filepath.Join(configDir, applicationName)
 	err = os.MkdirAll(appDir, 0755)
-	if err != nil {
-		return "", err
-	}
 
-	return appDir, nil
+	return appDir, err
 }

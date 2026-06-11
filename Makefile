@@ -23,6 +23,10 @@ install:
 symlink:
 	ln -sf $(BIN_DIR)/taskjrnl $(BIN_DIR)/task
 
+asm:
+	@uuid=$$(uuidgen); \
+	go build -gcflags="-S" ./... 2> asm$${uuid}.txt;
+
 clean:
 	rm -f coverage.out
 	rm -f coverage.html

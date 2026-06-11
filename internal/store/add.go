@@ -15,7 +15,7 @@ func insertTask(db *sql.DB, task schema.Tasks) error {
 
 	_, err := db.Exec(stmt, task.Name,
 		task.Tag, task.Priority,
-		consts.DefaultVairance)
+		consts.DefaultWeight)
 
 	if err != nil {
 		return err
