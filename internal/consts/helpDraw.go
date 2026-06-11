@@ -6,22 +6,26 @@ import (
 	"charm.land/lipgloss/v2"
 )
 
+const (
+	CmdFlagWidth = 20
+)
+
 var (
 	HelpTitleStyle = lipgloss.NewStyle().
 			Bold(true).
 			Foreground(config.Vermilian)
 
-	HelpUsageText = lipgloss.NewStyle().
-			Foreground(config.Blue)
+	HelpUsageTextStyle = lipgloss.NewStyle().
+				Foreground(config.Blue)
 
-	HelpOptionsText = lipgloss.NewStyle().
-			Bold(true).
-			Foreground(config.Orange)
+	HelpOptionsTextStyle = lipgloss.NewStyle().
+				Bold(true).
+				Foreground(config.Orange)
 
-	HelpCommandsNFlagsText = HelpOptionsText.
-				Width(20)
+	HelpCommandsNFlagsTextStyle = HelpOptionsTextStyle.
+					Width(CmdFlagWidth)
 
-	HelpBorder = lipgloss.NewStyle().
+	HelpBorderStyle = lipgloss.NewStyle().
 			Border(lipgloss.RoundedBorder()).
 			BorderForeground(config.Vermilian)
 )

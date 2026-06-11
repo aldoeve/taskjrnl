@@ -19,8 +19,8 @@ type Options = BaseArgStruct
 // Returns a string of formated arguements and their description.
 func buildArgsNDesc(finalOutput string, args []BaseArgStruct) string {
 	for _, argObj := range args {
-		argName := consts.HelpCommandsNFlagsText.Render("\t" + argObj.name)
-		argUsageDesc := consts.HelpUsageText.Render(argObj.usage)
+		argName := consts.HelpCommandsNFlagsTextStyle.Render("\t" + argObj.name)
+		argUsageDesc := consts.HelpUsageTextStyle.Render(argObj.usage)
 		argRow := lipgloss.JoinHorizontal(lipgloss.Left, argName, argUsageDesc)
 
 		finalOutput = lipgloss.JoinVertical(lipgloss.Left, finalOutput, argRow)
@@ -57,12 +57,12 @@ func buildCommnadsSection() string {
 // Draws help output to stdout.
 func drawHelp() {
 	titleAppName := consts.HelpTitleStyle.Render("taskjrnl")
-	titleAppDesc := consts.HelpOptionsText.Render(" — a simple command line task & journal")
-	version := consts.HelpOptionsText.Render(config.Version)
+	titleAppDesc := consts.HelpOptionsTextStyle.Render(" — a simple command line task & journal")
+	version := consts.HelpOptionsTextStyle.Render(config.Version)
 	finalTitle := lipgloss.JoinHorizontal(lipgloss.Left, titleAppName, titleAppDesc, version)
 
 	usageTabTitle := consts.HelpTitleStyle.Render("Usage:")
-	usageText := consts.HelpUsageText.Render("\n\ttaskjrnl [options] <command>")
+	usageText := consts.HelpUsageTextStyle.Render("\n\ttaskjrnl [options] <command>")
 	finalUsage := lipgloss.JoinVertical(lipgloss.Left, usageTabTitle, usageText)
 
 	commandsSection := buildCommnadsSection()
@@ -81,7 +81,7 @@ func drawHelp() {
 		"\n",
 	)
 
-	final = consts.HelpBorder.Render(final)
+	final = consts.HelpBorderStyle.Render(final)
 
 	lipgloss.Println(final)
 }

@@ -60,7 +60,7 @@ func renderInfo(task schema.Tasks, notes []schema.Pages) error {
 		out = lipgloss.JoinVertical(lipgloss.Left, out, notesOutput)
 	}
 
-	out = consts.InfoBorder.Render(out)
+	out = consts.InfoBorderStyle.Render(out)
 	_, err := lipgloss.Println(out)
 
 	return err

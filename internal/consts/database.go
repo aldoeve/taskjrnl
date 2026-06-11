@@ -4,5 +4,7 @@ package consts
 const (
 	DBName       = "TJ.db"
 	DatabaseType = "sqlite"
-	TestDBName   = "++TEST++.db"
+
+	// WARN: For testing only.
+	TestDBName = "++TEST++.db"
 )

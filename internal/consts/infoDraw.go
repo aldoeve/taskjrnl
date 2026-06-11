@@ -12,7 +12,7 @@ const (
 )
 
 var (
-	InfoBorder = lipgloss.NewStyle().
+	InfoBorderStyle = lipgloss.NewStyle().
 			Border(lipgloss.RoundedBorder()).
 			BorderForeground(config.Vermilian)
 
