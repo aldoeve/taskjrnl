@@ -11,6 +11,7 @@ const (
 		WHERE task_id = ?;
 	`
 	CreateJrnlSQL = `
-		INSERT INTO Jrnls (task_id, page_id) VALUES (?,?);
+		INSERT INTO Jrnls (task_id, page_id) 
+		VALUES (?,?);
 	`
 )
