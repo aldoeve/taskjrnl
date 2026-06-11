@@ -3,6 +3,7 @@ package app
 import (
 	"database/sql"
 	"strconv"
+	"strings"
 	"taskjrnl/internal/config"
 	"taskjrnl/internal/consts"
 	"taskjrnl/internal/schema"
@@ -35,14 +36,31 @@ func generateTable() *table.Table {
 	return t
 }
 
+// Returns a string reduced to about the desired length.
+func trimToLastWord(str string, limit int) string {
+	if len(str) < limit {
+		return str
+	}
+
+	sliced := str[:limit]
+
+	lastSpaceIndex := strings.LastIndex(sliced, " ")
+	if lastSpaceIndex != -1 {
+		sliced = sliced[:lastSpaceIndex]
+	}
+
+	return sliced + "..."
+}
+
 // Draws tasks to stdout.
 func drawTasks(tasks []schema.Tasks) error {
 	t := generateTable()
 
-	for i, task := range tasks {
-		var priority, tag string
+	var position int
+	for _, task := range tasks {
+		position++
 
-		position := i + 1
+		var priority, tag string
 
 		if task.Priority != nil {
 			priority = *task.Priority
@@ -50,6 +68,8 @@ func drawTasks(tasks []schema.Tasks) error {
 		if task.Tag != nil {
 			tag = *task.Tag
 		}
+
+		task.Name = trimToLastWord(task.Name, consts.TaskNameCutOff)
 
 		t.Row(strconv.Itoa(position), priority, tag, task.Name, task.DateCreated)
 	}
@@ -63,8 +83,9 @@ func ListMode(db *sql.DB) error {
 	const expectedNumArgs = 0
 
 	userInput := util.ArgsAfterKeyword()
+	numArgs := len(userInput)
 
-	if numArgs := len(userInput); numArgs != expectedNumArgs {
+	if numArgs != expectedNumArgs {
 		return taskjrnlErrors.ErrUsage
 	}
 
@@ -73,5 +94,6 @@ func ListMode(db *sql.DB) error {
 		return err
 	}
 
-	return drawTasks(tasks)
+	err = drawTasks(tasks)
+	return err
 }

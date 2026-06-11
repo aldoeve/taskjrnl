@@ -6,7 +6,10 @@ import (
 
 	app "taskjrnl/internal/app"
 	exitcodes "taskjrnl/internal/exitCodes"
+	initvars "taskjrnl/internal/initVars"
 	taskjrnlErrors "taskjrnl/internal/taskjrnlErrors"
+
+	"github.com/charmbracelet/x/term"
 )
 
 // Returns error if there is no arguments passed.
@@ -22,6 +25,11 @@ func checkForMinArgs() error {
 
 // App entry point.
 func main() {
+	initvars.TerminalWidth, initvars.TerminalHeight, initvars.TerminalError = term.GetSize(os.Stdout.Fd())
+	if initvars.TerminalError != nil {
+		initvars.TerminalHeight = initvars.DefaultTerminalHeight
+		initvars.TerminalWidth = initvars.DefaultTerminalWidth
+	}
 
 	if err := checkForMinArgs(); err != nil {
 		_ = app.HelpMode(nil)
