@@ -13,6 +13,7 @@ func JrnlMode(db *sql.DB) error {
 	const (
 		expectedNumArgs     = 2
 		userTaskPositionLoc = 0
+		noteLoc             = 1
 	)
 
 	userInput := util.ArgsAfterKeyword()
@@ -26,7 +27,7 @@ func JrnlMode(db *sql.DB) error {
 		return err
 	}
 
-	err = store.AddNoteToTask(db, userTaskPosition, userInput[1])
+	err = store.AddNoteToTask(db, userTaskPosition, userInput[noteLoc])
 	if err == sql.ErrNoRows {
 		return util.InformTasksDoesNotExist()
 	}
