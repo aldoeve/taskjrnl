@@ -5,7 +5,7 @@ import "charm.land/lipgloss/v2"
 
 const (
 	TimeFormat = "2006-01-02 15:04:05"
-	Version    = " v0.4.1 "
+	Version    = " v0.5.0 "
 )
 
 // Application's colors.

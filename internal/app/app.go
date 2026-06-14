@@ -20,7 +20,7 @@ func bindStringToFunc(s *string) func(*sql.DB) error {
 		appmodes.Jrnl:   JrnlMode,
 		appmodes.Info:   InfoMode,
 		appmodes.List:   ListMode,
-		appmodes.Link:   Link,
+		appmodes.Link:   LinkMode,
 		appmodes.Modify: ModifyMode,
 		appmodes.Weight: WeightMode,
 	}
@@ -72,9 +72,4 @@ func App() error {
 	defer db.Close()
 
 	return mode(db)
-}
-
-// Functions below this line are still not implemented.
-func Link(_ *sql.DB) error {
-	return nil
 }

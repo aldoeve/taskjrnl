@@ -47,8 +47,9 @@ func buildCommnadsSection() string {
 		{appmodes.Add, "Adds task. <taskName> [priority:L|M|H] [tag:\"string\"]"},
 		{appmodes.List, "Lists all tasks"},
 		{appmodes.Jrnl, "Add a note to a task. <taskNumber> [\"string\"]"},
-		{appmodes.Modify, "Modify a task's values. <taskNumber> [priority:L|M|H] [tag:\"string\"]"},
+		{appmodes.Modify, "Modify a task's values. <taskNumber> <taskName> [priority:L|M|H] [tag:\"string\"]"},
 		{appmodes.Weight, "Adjust the importance of a task. <taskNumber> <±numericValue>"},
+		{appmodes.Link, "Connect ideas between tasks. <taskNumber> <taskNumber> [\"string\"]"},
 	}
 
 	return buildArgsNDesc(commandsSection, commands)
